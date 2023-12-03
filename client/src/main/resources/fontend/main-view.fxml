@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<SplitPane dividerPositions="0.4" stylesheets="@css/general.css"
+           xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="fontend.MainController">
+
+    <TabPane minWidth="200" tabClosingPolicy="UNAVAILABLE">
+        <Tab onSelectionChanged="#resetSelected" text="Received">
+            <ListView fx:id="receivedListView" onMouseClicked="#updateSelectedReceived" />
+        </Tab>
+        <Tab onSelectionChanged="#resetSelected" text="Sent">
+            <ListView fx:id="sentListView" onMouseClicked="#updateSelectedSent" />
+        </Tab>
+    </TabPane>
+
+    <BorderPane minWidth="400">
+        <center>
+            <TextArea fx:id="contentText" wrapText="true"/>
+        </center>
+
+        <bottom>
+            <HBox>
+                <Button maxWidth="Infinity" text="New" HBox.hgrow="ALWAYS">
+                    <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
+                </Button>
+                <Button maxWidth="Infinity" text="Reply" HBox.hgrow="ALWAYS">
+                    <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
+                </Button>
+                <Button maxWidth="Infinity" text="Reply All" HBox.hgrow="ALWAYS">
+                    <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
+                </Button>
+                <Button maxWidth="Infinity" text="Forward" HBox.hgrow="ALWAYS">
+                    <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
+                </Button>
+            </HBox>
+        </bottom>
+    </BorderPane>
+
+</SplitPane>
