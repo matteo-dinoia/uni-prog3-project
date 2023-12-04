@@ -36,7 +36,7 @@ public class App extends Application{
         setParameters();
     }
 
-    public void setParameters(){
+    private void setParameters(){
         stage.setTitle("Mail Client");
         setIcon();
 
@@ -45,7 +45,7 @@ public class App extends Application{
         stage.show();
     }
 
-    public void setIcon(){
+    private void setIcon(){
         // Icon by Icons8 at https://icons8.com/icon/xLIkjgcmFOsC/mail
         URL imageURL = App.class.getResource("icon.png");
         if(imageURL != null) stage.getIcons().add(new Image(imageURL.toExternalForm()));
