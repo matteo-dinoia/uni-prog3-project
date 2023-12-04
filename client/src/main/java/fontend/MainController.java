@@ -3,11 +3,8 @@ package fontend;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.text.Text;
 import model.Mail;
 
 public class MainController {
@@ -15,15 +12,11 @@ public class MainController {
     @FXML private ListView<Mail> receivedListView;
     @FXML private ListView<Mail> sentListView;
     @FXML private TextArea contentText;
-    @FXML private ScrollPane scrollPane;
     // Fields
     private final ObservableList<Mail> listReceived = FXCollections.observableArrayList();
     private final ObservableList<Mail> listSent = FXCollections.observableArrayList();
 
     @FXML private void initialize() {
-        //contentText.wrappingWidthProperty().bind(scrollPane.widthProperty().subtract(60));
-        resetSelected();
-
         receivedListView.setItems(listReceived);
         sentListView.setItems(listSent);
         loadMails();
