@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.TextArea?>
+
+<Pane xmlns:fx="http://javafx.com/fxml"
+      fx:controller="frontend.LogController">
+
+    <TextArea/>
+</Pane>
