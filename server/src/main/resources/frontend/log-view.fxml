@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
 
-<Pane xmlns:fx="http://javafx.com/fxml"
-      fx:controller="frontend.LogController">
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="frontend.LogController">
 
-    <TextArea/>
-</Pane>
+    <center>
+        <TextArea fx:id="logText" editable="false" wrapText="true"/>
+    </center>
+
+    <bottom>
+        <HBox alignment="TOP_RIGHT">
+            <Button onAction="#cleanOutput" text="Clear Output">
+                <HBox.margin><Insets topRightBottomLeft="10"/></HBox.margin>
+            </Button>
+        </HBox>
+
+    </bottom>
+</BorderPane>
