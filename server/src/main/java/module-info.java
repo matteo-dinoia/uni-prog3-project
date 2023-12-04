@@ -1,8 +1,8 @@
-module server.server {
+module Server {
     requires javafx.controls;
     requires javafx.fxml;
 
 
-    opens server.server to javafx.fxml;
-    exports server.server;
+    exports frontend;
+    opens frontend to javafx.fxml;
 }
