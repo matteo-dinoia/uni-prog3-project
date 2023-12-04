@@ -1,4 +1,4 @@
-module client.client {
+module Client {
     requires javafx.controls;
     requires javafx.fxml;
 
