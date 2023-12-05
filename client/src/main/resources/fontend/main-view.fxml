@@ -19,7 +19,7 @@
 
     <BorderPane minWidth="400">
         <center>
-            <TextArea fx:id="contentText" wrapText="true"/>
+            <TextArea fx:id="contentText" wrapText="true" editable="false"/>
         </center>
 
         <bottom>
