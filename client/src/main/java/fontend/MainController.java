@@ -1,5 +1,6 @@
 package fontend;
 
+import fontend.util.StageWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,8 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import javafx.stage.Window;
 import model.Mail;
 
 import java.io.IOException;
@@ -79,16 +79,29 @@ public class MainController {
     }
 
     @FXML private void newMail(ActionEvent event){
-        try {
-            Stage stage = new Stage();
-            FXMLLoader loader = new FXMLLoader(MainController.class.getResource("mail-editor-view.fxml"));
-            stage.setScene(new Scene(loader.load(), 500, 400));
-            stage.setTitle("Mail editor");
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(((Node)event.getSource()).getScene().getWindow());
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+        Window owner = ((Node)event.getSource()).getScene().getWindow();
+
+        // TODO use acutal sender,...
+        if(event.getSource() == replyBtn)
+            openDialog(owner, new Mail("ME", "You", "Re: ", null));
+        else if(event.getSource() == replyAllBtn)
+            openDialog(owner, new Mail("ME", "All", "Re: ", null));
+        else if(event.getSource() == forwardBtn)
+            openDialog(owner, new Mail("ME", null, "Fwd: ", null));
+        else
+            openDialog(owner, new Mail("ME", null, null, null));
+    }
+
+    private void openDialog(Window owner, Mail startPoint){
+        StageWrapper stageWrapper = new StageWrapper(null, "Mail editor", 500, 400);
+        stageWrapper.setModal(owner);
+
+        MailEditorController contrEditor = stageWrapper.setRootAndGetController(getClass().getResource("mail-editor-view.fxml"));
+        if (contrEditor != null){
+            contrEditor.setOptionListener((Mail mail) -> { listSent.add(mail); stageWrapper.close(); });
+            contrEditor.setDefaultMail(startPoint);
         }
+
+        stageWrapper.open();
     }
 }
