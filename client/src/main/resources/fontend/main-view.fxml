@@ -24,16 +24,16 @@
 
         <bottom>
             <HBox>
-                <Button maxWidth="Infinity" text="New" HBox.hgrow="ALWAYS" onAction="#newMail">
+                <Button onAction="#newMail" maxWidth="Infinity" text="New" HBox.hgrow="ALWAYS">
                     <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
                 </Button>
-                <Button maxWidth="Infinity" text="Reply" HBox.hgrow="ALWAYS">
+                <Button fx:id="replyBtn" onAction="#newMail" maxWidth="Infinity" text="Reply" HBox.hgrow="ALWAYS">
                     <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
                 </Button>
-                <Button maxWidth="Infinity" text="Reply All" HBox.hgrow="ALWAYS">
+                <Button fx:id="replyAllBtn" onAction="#newMail" maxWidth="Infinity" text="Reply All" HBox.hgrow="ALWAYS">
                     <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
                 </Button>
-                <Button maxWidth="Infinity" text="Forward" HBox.hgrow="ALWAYS">
+                <Button fx:id="forwardBtn" onAction="#newMail" maxWidth="Infinity" text="Forward" HBox.hgrow="ALWAYS">
                     <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
                 </Button>
             </HBox>

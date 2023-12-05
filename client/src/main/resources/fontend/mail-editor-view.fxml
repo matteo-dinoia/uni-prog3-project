@@ -12,15 +12,15 @@
    <center>
       <VBox>
          <Label text="To:" />
-         <TextField>
+         <TextField fx:id="toText">
             <VBox.margin><Insets bottom="10.0" /></VBox.margin>
          </TextField>
          <Label text="Object:"/>
-         <TextField>
+         <TextField fx:id="objText">
             <VBox.margin><Insets bottom="10.0" /></VBox.margin>
          </TextField>
          <Label text="Body:"/>
-         <TextArea VBox.vgrow="ALWAYS" />
+         <TextArea fx:id="contentText" VBox.vgrow="ALWAYS" />
       </VBox>
    </center>
 
