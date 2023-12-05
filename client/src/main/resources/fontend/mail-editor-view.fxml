@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" 
+         fx:controller="fontend.MailEditorController">
+
+   <padding><Insets left="20.0" right="20.0" top="20.0" /></padding>
+
+   <center>
+      <VBox>
+         <Label text="To:" />
+         <TextField>
+            <VBox.margin><Insets bottom="10.0" /></VBox.margin>
+         </TextField>
+         <Label text="Object:"/>
+         <TextField>
+            <VBox.margin><Insets bottom="10.0" /></VBox.margin>
+         </TextField>
+         <Label text="Body:"/>
+         <TextArea VBox.vgrow="ALWAYS" />
+      </VBox>
+   </center>
+
+   <bottom>
+      <HBox alignment="TOP_RIGHT">
+         <Button text="Cancel" onAction="#cancel">
+            <HBox.margin><Insets topRightBottomLeft="10.0" /></HBox.margin>
+         </Button>
+         <Button text="Send" onAction="#send">
+            <HBox.margin><Insets topRightBottomLeft="10.0" /></HBox.margin>
+         </Button>
+      </HBox>
+   </bottom>
+</BorderPane>
