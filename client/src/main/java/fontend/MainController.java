@@ -2,10 +2,19 @@ package fontend;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import model.Mail;
+
+import java.io.IOException;
 
 public class MainController {
     // FXML
@@ -68,4 +77,17 @@ public class MainController {
         showMail(new Mail("", "", "", ""));
     }
 
+    @FXML private void newMail(ActionEvent event){
+        try {
+            Stage stage = new Stage();
+            FXMLLoader loader = new FXMLLoader(MainController.class.getResource("mail-editor-view.fxml"));
+            stage.setScene(new Scene(loader.load(), 500, 400));
+            stage.setTitle("Mail editor");
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(((Node)event.getSource()).getScene().getWindow());
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
