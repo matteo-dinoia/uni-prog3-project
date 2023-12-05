@@ -1,6 +1,6 @@
 package fontend;
 
-import interfaces.LoginListener;
+import interfaces.EndStatusListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import model.MailAddress;
@@ -10,7 +10,7 @@ public class LoginController {
     // FXML
     @FXML private TextField usernameField;
     // Field
-    private LoginListener listener = null;
+    private EndStatusListener<String> listener = null;
 
     @FXML private void login(){
         if(listener == null){
@@ -20,10 +20,10 @@ public class LoginController {
 
         String mail = usernameField.getText();
         if(new MailAddress(mail).checkValidity())
-            listener.continueAsUser(mail);
+            listener.useEndStatus(mail);
     }
 
-    public void setContinueAsUser(LoginListener listener) {
+    public void setContinueAsUser(EndStatusListener<String> listener) {
         this.listener = listener;
     }
 }
