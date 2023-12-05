@@ -19,12 +19,12 @@
 
     <BorderPane minWidth="400">
         <center>
-            <TextArea fx:id="contentText" wrapText="true"/>
+            <TextArea fx:id="contentText" wrapText="true" editable="false"/>
         </center>
 
         <bottom>
             <HBox>
-                <Button maxWidth="Infinity" text="New" HBox.hgrow="ALWAYS">
+                <Button maxWidth="Infinity" text="New" HBox.hgrow="ALWAYS" onAction="#newMail">
                     <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
                 </Button>
                 <Button maxWidth="Infinity" text="Reply" HBox.hgrow="ALWAYS">
