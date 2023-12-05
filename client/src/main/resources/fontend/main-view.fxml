@@ -24,7 +24,7 @@
 
         <bottom>
             <HBox>
-                <Button maxWidth="Infinity" text="New" HBox.hgrow="ALWAYS">
+                <Button maxWidth="Infinity" text="New" HBox.hgrow="ALWAYS" onAction="#newMail">
                     <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
                 </Button>
                 <Button maxWidth="Infinity" text="Reply" HBox.hgrow="ALWAYS">
