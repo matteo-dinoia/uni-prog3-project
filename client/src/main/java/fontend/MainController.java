@@ -7,7 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.stage.Window;
@@ -20,6 +20,7 @@ public class MainController {
     @FXML private ListView<Mail> receivedListView;
     @FXML private ListView<Mail> sentListView;
     @FXML private TextArea contentText;
+    @FXML private Button replyBtn, replyAllBtn, forwardBtn;
     // Fields
     private final ObservableList<Mail> listReceived = FXCollections.observableArrayList();
     private final ObservableList<Mail> listSent = FXCollections.observableArrayList();
