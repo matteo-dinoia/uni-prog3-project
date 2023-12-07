@@ -1,5 +1,6 @@
 package fontend;
 
+import backend.Sender;
 import fontend.util.StageWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -68,13 +69,13 @@ public class MainController {
 
         // TODO use acutal sender,...
         if(event.getSource() == replyBtn)
-            openDialog(owner, new Mail("ME", "You", "Re: ", null));
+            openDialog(owner, new Mail("ME@ME.ME", "You", "Re: ", null));
         else if(event.getSource() == replyAllBtn)
-            openDialog(owner, new Mail("ME", "All", "Re: ", null));
+            openDialog(owner, new Mail("ME@ME.ME", "All", "Re: ", null));
         else if(event.getSource() == forwardBtn)
-            openDialog(owner, new Mail("ME", null, "Fwd: ", null));
+            openDialog(owner, new Mail("ME@ME.ME", null, "Fwd: ", null));
         else
-            openDialog(owner, new Mail("ME", null, null, null));
+            openDialog(owner, new Mail("ME@ME.ME", null, null, null));
     }
 
     private void openDialog(Window owner, Mail startPoint){
@@ -83,7 +84,7 @@ public class MainController {
 
         MailEditorController contrEditor = stageWrapper.setRootAndGetController(getClass().getResource("mail-editor-view.fxml"));
         if (contrEditor != null){
-            contrEditor.setOptionListener((Mail mail) -> { listSent.add(mail); stageWrapper.close(); });
+            contrEditor.setOptionListener((Mail mail) -> { listSent.add(mail); stageWrapper.close(); new Sender().send(mail); });
             contrEditor.setDefaultMail(startPoint);
         }
 

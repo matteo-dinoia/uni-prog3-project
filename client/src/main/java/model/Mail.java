@@ -25,7 +25,7 @@ public class Mail {
             return false;
 
         for(MailAddress addr : destinations){
-            if(!addr.checkValidity())
+            if(addr == null || !addr.checkValidity())
                 return false;
         }
 
