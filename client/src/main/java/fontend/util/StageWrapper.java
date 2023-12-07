@@ -1,6 +1,7 @@
 package fontend.util;
 
 import fontend.App;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -8,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -69,5 +71,9 @@ public class StageWrapper {
 
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(window);
+    }
+
+    public void setOnClose(EventHandler<WindowEvent> handler) {
+        stage.setOnCloseRequest(handler);
     }
 }
