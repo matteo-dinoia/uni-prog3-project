@@ -37,25 +37,10 @@ public class Mail {
     }
 
     public String formatted(){
-        StringBuilder res = new StringBuilder();
-
-        res.append("From: ");
-        res.append(getFrom());
-        res.append("\n");
-
-        res.append("To: ");
-        res.append(getTo());
-
-        res.append("\n");
-
-        res.append("Obj: ");
-        res.append(getObject());
-        res.append("\n\n");
-
-        res.append(getContent());
-        res.append("\n");
-
-        return res.toString();
+        return "From: " + getFrom() + "\n" +
+                "To: " + getTo() + "\n" +
+                "Obj: " + getObject() + "\n" +
+                "\n" + getContent() + "\n";
     }
 
     public String getFrom(){ return source != null ? source.toString() : ""; }
@@ -66,7 +51,7 @@ public class Mail {
 
         for(MailAddress addr : destinations){
             if(addr != null && addr.toString() != null){
-                res.append(addr.toString());
+                res.append(addr);
                 res.append(", ");
             }
         }
