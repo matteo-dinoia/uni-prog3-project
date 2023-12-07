@@ -40,22 +40,36 @@ public class Mail {
         StringBuilder res = new StringBuilder();
 
         res.append("From: ");
-        if(source != null) res.append(source);
+        res.append(getFrom());
         res.append("\n");
 
         res.append("To: ");
-        for(MailAddress addr : destinations){
-            res.append(addr.toString() == null ? "" : addr.toString());
-            res.append(", ");
-        }
+        res.append(getTo());
+
         res.append("\n");
 
         res.append("Obj: ");
-        if(object != null) res.append(object);
+        res.append(getObject());
         res.append("\n\n");
 
-        if(content != null) res.append(content);
+        res.append(getContent());
         res.append("\n");
+
+        return res.toString();
+    }
+
+    public String getFrom(){ return source != null ? source.toString() : ""; }
+    public String getObject(){ return object != null ? object : ""; }
+    public String getContent(){ return content != null ? content : ""; }
+    public String getTo(){
+        StringBuilder res = new StringBuilder();
+
+        for(MailAddress addr : destinations){
+            if(addr != null && addr.toString() != null){
+                res.append(addr.toString());
+                res.append(", ");
+            }
+        }
 
         return res.toString();
     }

@@ -17,8 +17,9 @@ public class MailEditorController implements EndStatusNotifier<Mail> {
     private EndStatusListener<Mail> listener;
 
     public void setDefaultMail(Mail mail){
-        //TODO fix
-        contentText.setText(mail.formatted());
+        toText.setText(mail.getTo());
+        objText.setText(mail.getObject());
+        contentText.setText(mail.getContent());
     }
 
     private Mail getMail(){
