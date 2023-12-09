@@ -13,17 +13,20 @@ public class MailEditorController implements EndStatusNotifier<Mail> {
     @FXML private TextField objText;
     @FXML private TextArea contentText;
     // Fields
+    private Mail mailCreated;
     private EndStatusListener<Mail> listener;
 
     public void setDefaultMail(Mail mail){
+        this.mailCreated = mail;
+
         toText.setText(mail.getTo());
         objText.setText(mail.getObject());
         contentText.setText(mail.getContent());
     }
 
     private Mail getMail(){
-        // TODO multiple destination + from
-        return new Mail("ME", toText.getText(),
+        // TODO multiple destination + from + fix 2 mail for 1
+        return new Mail(mailCreated.getFrom(), toText.getText(),
                     objText.getText(), contentText.getText());
     }
 
