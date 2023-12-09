@@ -2,7 +2,6 @@ package fontend;
 
 import interfaces.EndStatusListener;
 import interfaces.EndStatusNotifier;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -19,8 +18,10 @@ public class MailEditorController implements EndStatusNotifier<Mail> {
 
     public void setDefaultMail(Mail mail){
         this.mailCreated = mail;
-        //TODO fix
-        contentText.setText(mail.formatted());
+
+        toText.setText(mail.getTo());
+        objText.setText(mail.getObject());
+        contentText.setText(mail.getContent());
     }
 
     private Mail getMail(){
@@ -29,8 +30,8 @@ public class MailEditorController implements EndStatusNotifier<Mail> {
                     objText.getText(), contentText.getText());
     }
 
-    @FXML private void cancel(ActionEvent actionEvent) { notifyListener(null); }
-    @FXML private void send(ActionEvent actionEvent) { notifyListener(getMail()); }
+    @FXML private void cancel() { notifyListener(null); }
+    @FXML private void send() { notifyListener(getMail()); }
     private void notifyListener(Mail res){ if(listener != null) listener.useEndStatus(res); }
 
     @Override public void setOptionListener(EndStatusListener<Mail> listener) {
