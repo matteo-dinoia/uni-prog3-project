@@ -37,25 +37,24 @@ public class Mail {
     }
 
     public String formatted(){
+        return "From: " + getFrom() + "\n" +
+                "To: " + getTo() + "\n" +
+                "Obj: " + getObject() + "\n" +
+                "\n" + getContent() + "\n";
+    }
+
+    public String getFrom(){ return source != null ? source.toString() : ""; }
+    public String getObject(){ return object != null ? object : ""; }
+    public String getContent(){ return content != null ? content : ""; }
+    public String getTo(){
         StringBuilder res = new StringBuilder();
 
-        res.append("From: ");
-        if(source != null) res.append(source);
-        res.append("\n");
-
-        res.append("To: ");
         for(MailAddress addr : destinations){
-            res.append(addr.toString() == null ? "" : addr.toString());
-            res.append(", ");
+            if(addr != null && addr.toString() != null){
+                res.append(addr);
+                res.append(", ");
+            }
         }
-        res.append("\n");
-
-        res.append("Obj: ");
-        if(object != null) res.append(object);
-        res.append("\n\n");
-
-        if(content != null) res.append(content);
-        res.append("\n");
 
         return res.toString();
     }
