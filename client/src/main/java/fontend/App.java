@@ -4,6 +4,8 @@ import backend.Updater;
 import fontend.util.StageWrapper;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import model.MailAddress;
+import model.MailBox;
 
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -15,10 +17,10 @@ public class App extends Application{
     private final static String TITLE = "Mail Client";
     private final static int WIDTH = 800;
     private final static int HEIGHT = 500;
-    private final static int TIME_TO_UPDATE = 2;
+    private final static int TIME_TO_UPDATE = 10;
     // Fields
     private StageWrapper stageWrapper;
-    private ScheduledExecutorService scheduler = newScheduledThreadPool(1);
+    private final ScheduledExecutorService scheduler = newScheduledThreadPool(1);
 
     @Override public void start(Stage st){
         this.stageWrapper = new StageWrapper(st, TITLE, WIDTH, HEIGHT);
@@ -28,20 +30,26 @@ public class App extends Application{
         stageWrapper.open();
     }
 
-    public void startUpdater(){
-
-        scheduler.scheduleAtFixedRate(new Updater(), 0, TIME_TO_UPDATE, TimeUnit.SECONDS);
+    public void startUpdater(MailBox mailBox){
+        scheduler.scheduleAtFixedRate(new Updater(mailBox), 0, TIME_TO_UPDATE, TimeUnit.SECONDS);
     }
 
     private void loadPages(){
-            LoginController contrLogin = stageWrapper.setRootAndGetController(getClass().getResource("login-view.fxml"));
+        LoginController contrLogin = stageWrapper.setRootAndGetController(getClass().getResource("login-view.fxml"));
 
-            if(contrLogin != null) contrLogin.setContinueAsUser((login) -> {
-                //TODO actually use username
-                stageWrapper.setRootAndGetController(getClass().getResource("main-view.fxml"));
-                stageWrapper.setTitle(TITLE + " - " + login);
-                startUpdater();
-            });
+        if(contrLogin != null)
+            contrLogin.setContinueAsUser(this::loadMainPage);
+    }
+
+    private void loadMainPage(String login){
+        MailBox mailBox = new MailBox(new MailAddress(login));
+
+        MainController contrEditor = stageWrapper.setRootAndGetController(getClass().getResource("main-view.fxml"));
+        if(contrEditor != null)
+            contrEditor.initializeModel(mailBox);
+
+        stageWrapper.setTitle(TITLE + " - " + login);
+        startUpdater(mailBox);
     }
 
     private void setParameters(){
