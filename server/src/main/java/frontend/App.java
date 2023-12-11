@@ -35,7 +35,10 @@ public class App extends Application {
 
     private void setupServer(Logger logger){
         Server server = Server.getServer(logger);
-        server.start();
+        Thread threadServer = new Thread(server);
+        threadServer.start();
+
+        stage.setOnCloseRequest((event) -> threadServer.interrupt());
     }
 
     public static void main(String[] args) {

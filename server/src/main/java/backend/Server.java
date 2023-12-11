@@ -2,7 +2,12 @@ package backend;
 
 import interfaces.Logger;
 
-public class Server implements Logger{
+import java.io.IOException;
+import java.io.InterruptedIOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Server implements Runnable, Logger{
     private Logger logger;
 
     private static Server singleInstance;
@@ -15,12 +20,27 @@ public class Server implements Logger{
         return singleInstance;
     }
 
-    public void start(){
-        //TODO actual start of server
-        log("Test\n");
-        for(int i = 0; i < 100; i++)
-            log(i + ") Testing ");
+    @Override public void log(String str) { if(logger != null) logger.log(str); }
+
+    @Override public void run() {
+
+        try (ServerSocket server = new ServerSocket(60421)){
+            server.setSoTimeout(2000);
+            Socket socket;
+
+            while(!Thread.currentThread().isInterrupted()){
+                try{
+                    socket = server.accept();
+                }catch(InterruptedIOException stopped){
+                    continue;
+                }
+
+                ConnectionReplier replier = new ConnectionReplier(this, socket);
+                new Thread(replier).start();
+            }
+        }catch (IOException exc){
+            log("FATAL: cannot open/accept server socket");
+        }
     }
 
-    @Override public void log(String str) { if(logger != null) logger.log(str); }
 }

@@ -1,6 +1,7 @@
 module Client {
     requires javafx.controls;
     requires javafx.fxml;
+    requires com.google.gson;
 
 
     opens fontend to javafx.fxml;
@@ -8,5 +9,6 @@ module Client {
     exports interfaces;
     exports fontend.util;
     exports model;
+    opens model;
     opens fontend.util to javafx.fxml;
 }

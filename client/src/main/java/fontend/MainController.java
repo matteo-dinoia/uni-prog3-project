@@ -67,7 +67,7 @@ public class MainController {
 
         MailEditorController contrEditor = stageWrapper.setRootAndGetController(getClass().getResource("mail-editor-view.fxml"));
         if (contrEditor != null){
-            contrEditor.setOptionListener((Mail mail) -> { mailBox.addSent(mail); stageWrapper.close(); new Thread(new Sender(mail)).start(); });
+            contrEditor.setOptionListener((Mail mail) -> { mailBox.add(mail); stageWrapper.close(); new Thread(new Sender(mail)).start(); });
             contrEditor.setDefaultMail(startPoint);
         }
 
