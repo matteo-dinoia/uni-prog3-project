@@ -4,11 +4,9 @@ import interfaces.Logger;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.google.gson.Gson;
-import model.Mail;
+import model.SimpleMail;
 
 public class ConnectionReplier implements Runnable{
     private final Logger logger;
@@ -39,13 +37,27 @@ public class ConnectionReplier implements Runnable{
         logger.log("ENDED");
     }
 
-    private Mail[] testMails(){
+    private SimpleMail[] testMails(){
+        /*try(Writer writer = new OutputStreamWriter(new FileOutputStream("mail/file.json"))){
+            SimpleMail[] mails = {
+                    new SimpleMail("testuser@gmail.com", "a", "b1", "c"),
+                    new SimpleMail("testuser@gmail.com", "a", "b2", "c"),
+                    new SimpleMail("a", "a", "bb1", "c"),
+                    new SimpleMail("a", "a", "bb2", "c"),
+                    new SimpleMail("a", "a", "bb3", "c"),
+                    new SimpleMail("a", "a", "bb4", "c"),
+            };
+            writer.write(gson.toJson(mails));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
         try(Reader reader = new InputStreamReader(new FileInputStream("mail/file.json"))){
-            return gson.fromJson(reader, Mail[].class);
+            return gson.fromJson(reader, SimpleMail[].class);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return new Mail[0];
+        return new SimpleMail[0];
     }
 }

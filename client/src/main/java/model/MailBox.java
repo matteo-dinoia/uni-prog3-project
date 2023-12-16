@@ -1,5 +1,6 @@
 package model;
 
+import backend.SimpleMail;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -38,12 +39,12 @@ public class MailBox {
 
     }
 
-    public void add(List<Mail> list) {
+    public void add(List<SimpleMail> list) {
         if(list == null || list.isEmpty())
             return;
 
-        for(Mail toAdd : list)
-            this.add(toAdd);
+        for(SimpleMail toAdd : list)
+            this.add(new Mail(toAdd));
     }
 
     public void setOnline(boolean value) {

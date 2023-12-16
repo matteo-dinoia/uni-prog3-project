@@ -13,4 +13,6 @@ module Client {
     opens frontend.util to javafx.fxml;
     exports frontend.component;
     opens frontend.component to javafx.fxml;
+    exports backend;
+    opens backend;
 }

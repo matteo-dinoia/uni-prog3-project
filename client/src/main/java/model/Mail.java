@@ -1,5 +1,6 @@
 package model;
 
+import backend.SimpleMail;
 import javafx.beans.property.SimpleStringProperty;
 import java.io.Serializable;
 
@@ -12,24 +13,17 @@ public class Mail implements Serializable {
     private int id;
     private long timestamp;
 
-    public Mail(String from, String firstDest, String object, String content){
+    public Mail(String from, String dest, String object, String content){
         this.source.set(from);
-        this.destinations.set(firstDest);
+        this.destinations.set(dest);
         this.object.set(object);
         this.content.set(content);
     }
 
-/*  public boolean checkValidity(){ // move out
-        if(!source.checkValidity())
-            return false;
-
-        for(MailAddress addr : destinations){
-            if(addr == null || !addr.checkValidity())
-                return false;
-        }
-
-        return true;
-    }*/
+    public Mail(SimpleMail toAdd) {
+        this(toAdd.getSource(), toAdd.getDestinations(),
+                toAdd.getObject(), toAdd.getContent());
+    }
 
     @Override public String toString() {
         return object.get();
