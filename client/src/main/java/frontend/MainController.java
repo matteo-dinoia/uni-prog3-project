@@ -37,7 +37,6 @@ public class MainController {
 
         sentListView.getSelectionModel().clearSelection();
         receivedListView.getSelectionModel().clearSelection();
-        /*showMail(null);*/
     }
 
 

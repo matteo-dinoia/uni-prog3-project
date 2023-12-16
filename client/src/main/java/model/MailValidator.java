@@ -15,7 +15,7 @@ public class MailValidator {
         return true;
     }
 
-    public boolean isAddressValid(String address){ // Move out of the class
+    public boolean isAddressValid(String address){
         if(address == null || address.isEmpty())
             return false;
         address = address.trim();
@@ -39,7 +39,7 @@ public class MailValidator {
             }
         }
 
-        return state != ACCEPTED;
+        return state == ACCEPTED;
     }
 
 }

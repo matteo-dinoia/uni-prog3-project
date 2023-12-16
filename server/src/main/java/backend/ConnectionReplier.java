@@ -10,7 +10,7 @@ import model.SimpleMail;
 
 public class ConnectionReplier implements Runnable{
     private final Logger logger;
-    private Socket socket;
+    private final Socket socket;
     private final Gson gson = new Gson();
 
     public ConnectionReplier(Logger logger, Socket socket) {
@@ -55,7 +55,7 @@ public class ConnectionReplier implements Runnable{
         try(Reader reader = new InputStreamReader(new FileInputStream("mail/file.json"))){
             return gson.fromJson(reader, SimpleMail[].class);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log("ERROR: coudn't read from file");
         }
 
         return new SimpleMail[0];

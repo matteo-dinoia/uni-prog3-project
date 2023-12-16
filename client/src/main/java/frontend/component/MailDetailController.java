@@ -7,6 +7,7 @@ import model.MailBox;
 public class MailDetailController {
     // FXML
     @FXML private TextArea contentText;
+    // Field
     private final MailBox mailBox = MailBox.mBoxTmp;
 
     @FXML private void initialize() {

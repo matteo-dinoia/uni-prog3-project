@@ -19,7 +19,7 @@ public class LoginController {
         }
 
         String mail = usernameField.getText();
-        //if(validator.isAddressValid(mail))
+        if(validator.isAddressValid(mail))
             listener.useEndStatus(mail);
     }
 

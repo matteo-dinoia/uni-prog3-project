@@ -12,6 +12,8 @@ public class LogController implements Logger {
     }
 
     public void log(String str){
+        if(str == null)
+            str = "WARNING: logging null value";
         logText.appendText(str + "\n");
     }
 }

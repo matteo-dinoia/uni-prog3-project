@@ -5,8 +5,10 @@ import javafx.scene.control.Label;
 import model.MailBox;
 
 public class StatusBarController {
-    private final MailBox mailBox = MailBox.mBoxTmp;
+    // FXML
     @FXML private Label statusLabel;
+    // Field
+    private final MailBox mailBox = MailBox.mBoxTmp;
 
     @FXML private void initialize(){
         mailBox.getOnlineProperty().addListener((changed, oldV, newV) -> setOnline(newV));

@@ -1,6 +1,5 @@
 package backend;
 
-import model.Mail;
 import com.google.gson.Gson;
 import model.MailBox;
 import java.io.IOException;

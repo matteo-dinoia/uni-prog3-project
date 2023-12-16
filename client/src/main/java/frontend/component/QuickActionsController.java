@@ -15,7 +15,7 @@ import model.MailBox;
 public class QuickActionsController {
     // FXML
     @FXML private Button newBtn, replyBtn, replyAllBtn, forwardBtn, deleteBtn;
-
+    // Field
     private final MailBox mailBox = MailBox.mBoxTmp;
 
     @FXML private void initialize(){
