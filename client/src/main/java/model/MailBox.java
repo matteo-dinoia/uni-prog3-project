@@ -9,25 +9,25 @@ import java.util.List;
 public class MailBox {
     public static MailBox mBoxTmp = null;
     // Field
-    private final MailAddress owner;
+    private final String owner;
     private final SimpleBooleanProperty online = new SimpleBooleanProperty(false);
     private final ObservableList<Mail> listReceived = FXCollections.observableArrayList();
     private final ObservableList<Mail> listSent = FXCollections.observableArrayList();
 
-    public MailBox(MailAddress owner){
+    public MailBox(String owner){
         this.owner = owner;
     }
 
     public ObservableList<Mail> getObservableListSent(){ return listSent; }
     public ObservableList<Mail> getObservableListReceived(){ return listReceived; }
-    public String getOwner() { return owner.toString(); }
+    public String getOwner() { return owner; }
     public SimpleBooleanProperty getOnlineProperty(){ return online; }
 
     public void add(Mail mail) {
         if(mail == null)
             return;
 
-        if(owner.toString().equals(mail.getFrom())) {
+        if(owner.equals(mail.getFrom())) {
             if(!listSent.contains(mail))
                 listSent.add(mail);
         } else{

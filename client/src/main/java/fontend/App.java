@@ -4,7 +4,6 @@ import backend.Updater;
 import fontend.util.StageWrapper;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import model.MailAddress;
 import model.MailBox;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -40,7 +39,7 @@ public class App extends Application{
     }
 
     private void loadMainPage(String login){
-        MailBox mailBox = new MailBox(new MailAddress(login));
+        MailBox mailBox = new MailBox(login);
         MailBox.mBoxTmp = mailBox;
 
         MainController contrEditor = stageWrapper.setRootAndGetController(getClass().getResource("main-view.fxml"));

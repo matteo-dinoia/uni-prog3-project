@@ -3,12 +3,13 @@ package fontend;
 import interfaces.EndStatusListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import model.MailAddress;
+import model.MailValidator;
 
 public class LoginController {
     // FXML
     @FXML private TextField usernameField;
     // Field
+    private final MailValidator validator = new MailValidator();
     private EndStatusListener<String> listener = null;
 
     @FXML private void login(){
@@ -18,7 +19,7 @@ public class LoginController {
         }
 
         String mail = usernameField.getText();
-        if(new MailAddress(mail).checkValidity())
+        if(validator.isAddressValid(mail))
             listener.useEndStatus(mail);
     }
 

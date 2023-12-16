@@ -48,7 +48,6 @@ public class Mail implements Serializable {
     public SimpleStringProperty getToProperty(){ return destinations; }
 
 
-    String getFrom() {
-        return source.get();
-    }
+    String getFrom() { return source.get(); }
+    String getTo() { return destinations.get(); }
 }
