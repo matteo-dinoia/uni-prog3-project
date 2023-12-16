@@ -1,30 +1,26 @@
 package model;
 
+import javafx.beans.property.SimpleStringProperty;
+
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Mail implements Serializable {
-    private final MailAddress source;
-    private final List<MailAddress> destinations = new ArrayList<>();
-    private final String object;
-    private final String content;
+    private final SimpleStringProperty source = new SimpleStringProperty("");
+    private final SimpleStringProperty destinations = new SimpleStringProperty("");
+    private SimpleStringProperty object = new SimpleStringProperty("");
+    private SimpleStringProperty content = new SimpleStringProperty("");
     //TODO USE THEM
     private int id;
     private long timestamp;
 
     public Mail(String from, String firstDest, String object, String content){
-        source = new MailAddress(from);
-        addDestination(firstDest);
-        this.object = object;
-        this.content = content;
+        this.source.set(from);
+        this.destinations.set(firstDest);
+        this.object.set(object);
+        this.content.set(content);
     }
 
-    public void addDestination(String to){
-        destinations.add(new MailAddress(to));
-    }
-
-    public boolean checkValidity(){
+/*  public boolean checkValidity(){ // move out
         if(!source.checkValidity())
             return false;
 
@@ -34,34 +30,26 @@ public class Mail implements Serializable {
         }
 
         return true;
-    }
+    }*/
 
     @Override public String toString() {
-        return object;
+        return object.get();
     }
 
     public String formatted(){
-        return "From: " + getFrom() + "\n" +
-                "To: " + getTo() + "\n" +
-                "Obj: " + getObject() + "\n" +
-                "\n" + getContent() + "\n";
+        return "From: " + getFromProperty() + "\n" +
+                "To: " + getToProperty() + "\n" +
+                "Obj: " + getObjectProperty() + "\n" +
+                "\n" + getContentProperty() + "\n";
     }
 
-    public String getFrom(){ return source != null ? source.toString() : ""; }
-    public String getObject(){ return object != null ? object : ""; }
-    public String getContent(){ return content != null ? content : ""; }
-    public String getTo(){
-        StringBuilder res = new StringBuilder();
+    public SimpleStringProperty getFromProperty(){ return source; }
+    public SimpleStringProperty getObjectProperty(){ return object; }
+    public SimpleStringProperty getContentProperty(){ return content; }
+    public SimpleStringProperty getToProperty(){ return destinations; }
 
-        for(MailAddress addr : destinations){
-            if(addr != null && addr.toString() != null){
-                res.append(addr);
-                res.append(", ");
-            }
-        }
 
-        return res.toString();
+    String getFrom() {
+        return source.get();
     }
-
-
 }

@@ -7,11 +7,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.Socket;
-import java.util.List;
-
-import java.io.*;
-import java.net.Socket;
-import java.util.List;
 
 // TODO need to be scheduled
 public class Updater implements Runnable{
@@ -34,9 +29,9 @@ public class Updater implements Runnable{
                 if(lastUpdate != -1) return true;
 
                 Mail[] m;
-                m = gson.fromJson(input, Mail[].class);
+                /*m = gson.fromJson(input, Mail[].class);
 
-                mailBox.add(List.of(m));
+                mailBox.add(List.of(m));*/
                 lastUpdate = 0;
                 return true;
             }catch (IOException exc){

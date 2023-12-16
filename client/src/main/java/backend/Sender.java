@@ -10,7 +10,7 @@ public class Sender implements Runnable{
     }
 
     public void run(){
-        if(toSend == null || !toSend.checkValidity())
+        if(toSend == null/* || !toSend.checkValidity()*/)
             System.out.println("Mail not valid");
         else
             System.out.println("Sending mail:\n" + toSend.formatted() + "\n\n");

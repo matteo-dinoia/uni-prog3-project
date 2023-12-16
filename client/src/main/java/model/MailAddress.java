@@ -11,7 +11,7 @@ public class MailAddress implements Serializable {
 
     @Override public String toString() { return address; }
 
-    public boolean checkValidity(){
+    public boolean checkValidity(){ // Move out of the class
         if(address == null || address.isEmpty())
             return false;
 

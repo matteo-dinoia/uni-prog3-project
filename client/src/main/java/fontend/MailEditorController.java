@@ -19,15 +19,13 @@ public class MailEditorController implements EndStatusNotifier<Mail> {
     public void setDefaultMail(Mail mail){
         this.mailCreated = mail;
 
-        toText.setText(mail.getTo());
-        objText.setText(mail.getObject());
-        contentText.setText(mail.getContent());
+        toText.textProperty().bindBidirectional(mailCreated.getToProperty());
+        objText.textProperty().bindBidirectional(mailCreated.getObjectProperty());
+        contentText.textProperty().bindBidirectional(mailCreated.getContentProperty());
     }
 
     private Mail getMail(){
-        // TODO multiple destination + from + fix 2 mail for 1
-        return new Mail(mailCreated.getFrom(), toText.getText(),
-                    objText.getText(), contentText.getText());
+        return mailCreated;
     }
 
     @FXML private void cancel() { notifyListener(null); }
