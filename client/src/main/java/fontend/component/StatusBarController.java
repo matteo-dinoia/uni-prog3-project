@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 import model.MailBox;
 
 public class StatusBarController {
-    private MailBox mailBox = MailBox.mBoxTmp;
+    private final MailBox mailBox = MailBox.mBoxTmp;
     @FXML private Label statusLabel;
 
     @FXML private void initialize(){

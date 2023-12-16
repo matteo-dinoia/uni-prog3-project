@@ -8,6 +8,7 @@ import java.util.List;
 
 public class MailBox {
     public static MailBox mBoxTmp = null;
+    public final Mail selectedMail = new Mail("ciao0", "ciao1", "ciao2", "ciao3");
     // Field
     private final String owner;
     private final SimpleBooleanProperty online = new SimpleBooleanProperty(false);

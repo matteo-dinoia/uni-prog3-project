@@ -36,10 +36,10 @@ public class Mail implements Serializable {
     }
 
     public String formatted(){
-        return "From: " + getFromProperty() + "\n" +
-                "To: " + getToProperty() + "\n" +
-                "Obj: " + getObjectProperty() + "\n" +
-                "\n" + getContentProperty() + "\n";
+        return "From: " + getFromProperty().get() + "\n" +
+                "To: " + getToProperty().get() + "\n" +
+                "Obj: " + getObjectProperty().get() + "\n" +
+                "\n" + getContentProperty().get() + "\n";
     }
 
     public SimpleStringProperty getFromProperty(){ return source; }
