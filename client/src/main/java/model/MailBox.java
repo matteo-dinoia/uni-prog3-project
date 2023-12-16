@@ -6,10 +6,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.util.List;
 
-import java.io.Serializable;
-import java.util.List;
-
 public class MailBox {
+    public static MailBox mBoxTmp = null;
     // Field
     private final MailAddress owner;
     private final SimpleBooleanProperty online = new SimpleBooleanProperty(false);
@@ -48,7 +46,6 @@ public class MailBox {
     }
 
     public void setOnline(boolean value) {
-        System.out.println(value);
         Platform.runLater(() -> online.set(value));
     }
 }

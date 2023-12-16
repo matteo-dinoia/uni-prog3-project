@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import model.MailAddress;
 
-
 public class LoginController {
     // FXML
     @FXML private TextField usernameField;

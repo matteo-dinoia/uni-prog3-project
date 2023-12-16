@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+
+<TextArea fx:controller="fontend.component.MailDetailController" fx:id="contentText" wrapText="true" editable="false"
+          xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+
+</TextArea>

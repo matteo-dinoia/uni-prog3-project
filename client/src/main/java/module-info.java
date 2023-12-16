@@ -11,4 +11,6 @@ module Client {
     exports model;
     opens model;
     opens fontend.util to javafx.fxml;
+    exports fontend.component;
+    opens fontend.component to javafx.fxml;
 }

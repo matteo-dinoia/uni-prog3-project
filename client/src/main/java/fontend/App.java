@@ -6,10 +6,8 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import model.MailAddress;
 import model.MailBox;
-
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
 import static java.util.concurrent.Executors.newScheduledThreadPool;
 
 public class App extends Application{
@@ -43,6 +41,7 @@ public class App extends Application{
 
     private void loadMainPage(String login){
         MailBox mailBox = new MailBox(new MailAddress(login));
+        MailBox.mBoxTmp = mailBox;
 
         MainController contrEditor = stageWrapper.setRootAndGetController(getClass().getResource("main-view.fxml"));
         if(contrEditor != null)

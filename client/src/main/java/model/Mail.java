@@ -1,7 +1,6 @@
 package model;
 
 import javafx.beans.property.SimpleStringProperty;
-
 import java.io.Serializable;
 
 public class Mail implements Serializable {

@@ -57,6 +57,7 @@ public class StageWrapper {
             return loader.getController();
         }catch (IOException e){
             System.err.println("ERROR: couldn't load root page: " + url.toExternalForm());
+            System.err.println(e.getMessage());
         }
 
         return null;
