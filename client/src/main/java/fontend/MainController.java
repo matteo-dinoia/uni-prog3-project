@@ -25,12 +25,7 @@ public class MainController {
     @FXML private void updateSelectedSent(){ showMail(sentListView.getSelectionModel().getSelectedItem()); }
     @FXML private void updateSelectedReceived(){ showMail(receivedListView.getSelectionModel().getSelectedItem()); }
 
-    private void showMail(Mail toShow){
-        /*if(toShow == null)
-            contentText.setText("");
-        else
-            contentText.setText("\n" + toShow.formatted() + "\n");*/
-    }
+
 
     @FXML private void resetSelected(){
         if(sentListView == null || receivedListView == null)
