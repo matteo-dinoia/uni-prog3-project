@@ -19,10 +19,17 @@ public class MainController {
         sentListView.setItems(mailBox.getObservableListSent());
     }
 
-    @FXML private void updateSelectedSent(){ /*showMail(sentListView.getSelectionModel().getSelectedItem()); */}
-    @FXML private void updateSelectedReceived(){ /*showMail(receivedListView.getSelectionModel().getSelectedItem());*/ }
+    @FXML private void updateSelectedSent(){ updateSelected(sentListView.getSelectionModel().getSelectedItem()); }
+    @FXML private void updateSelectedReceived(){ updateSelected(receivedListView.getSelectionModel().getSelectedItem()); }
 
+    private void updateSelected(Mail mail){
+        if(mail == null) return;
 
+        mailBox.selectedMail.getFromProperty().bind(mail.getFromProperty());
+        mailBox.selectedMail.getToProperty().bind(mail.getToProperty());
+        mailBox.selectedMail.getObjectProperty().bind(mail.getObjectProperty());
+        mailBox.selectedMail.getContentProperty().bind(mail.getContentProperty());
+    }
 
     @FXML private void resetSelected(){
         if(sentListView == null || receivedListView == null)
