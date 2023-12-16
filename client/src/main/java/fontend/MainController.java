@@ -15,15 +15,12 @@ public class MainController {
     public void initializeModel(MailBox mailBox){
         this.mailBox = mailBox;
 
-        setOnline(false);
-        mailBox.getOnlineProperty().addListener((observable, old, value) -> setOnline(value));
-
         receivedListView.setItems(mailBox.getObservableListReceived());
         sentListView.setItems(mailBox.getObservableListSent());
     }
 
-    @FXML private void updateSelectedSent(){ showMail(sentListView.getSelectionModel().getSelectedItem()); }
-    @FXML private void updateSelectedReceived(){ showMail(receivedListView.getSelectionModel().getSelectedItem()); }
+    @FXML private void updateSelectedSent(){ /*showMail(sentListView.getSelectionModel().getSelectedItem()); */}
+    @FXML private void updateSelectedReceived(){ /*showMail(receivedListView.getSelectionModel().getSelectedItem());*/ }
 
 
 
@@ -33,7 +30,7 @@ public class MainController {
 
         sentListView.getSelectionModel().clearSelection();
         receivedListView.getSelectionModel().clearSelection();
-        showMail(null);
+        /*showMail(null);*/
     }
 
 
