@@ -36,12 +36,5 @@ public class MainController {
         showMail(null);
     }
 
-    private void setOnline(boolean online){
-        /*
-        newBtn.setDisable(!online);
-        replyBtn.setDisable(!online);
-        replyAllBtn.setDisable(!online);
-        forwardBtn.setDisable(!online);
-        deleteBtn.setDisable(!online);*/
-    }
+
 }

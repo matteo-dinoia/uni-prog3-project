@@ -14,7 +14,7 @@ import model.MailBox;
 
 public class QuickActionsController {
 
-    private MailBox mailBox = MailBox.mBoxTmp;
+    private final MailBox mailBox = MailBox.mBoxTmp;
 
     @FXML
     private void newMail(ActionEvent event){
@@ -49,5 +49,14 @@ public class QuickActionsController {
 
     public void deleteMail() {
         //TODO
+    }
+
+    private void setOnline(boolean online){
+        /*
+        newBtn.setDisable(!online);
+        replyBtn.setDisable(!online);
+        replyAllBtn.setDisable(!online);
+        forwardBtn.setDisable(!online);
+        deleteBtn.setDisable(!online);*/
     }
 }
