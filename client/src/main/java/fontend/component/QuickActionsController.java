@@ -13,11 +13,16 @@ import model.Mail;
 import model.MailBox;
 
 public class QuickActionsController {
+    // FXML
+    @FXML private Button newBtn, replyBtn, replyAllBtn, forwardBtn, deleteBtn;
 
     private final MailBox mailBox = MailBox.mBoxTmp;
 
-    @FXML
-    private void newMail(ActionEvent event){
+    @FXML private void initialize(){
+        mailBox.getOnlineProperty().addListener((changed, oldV, newV) -> setOnline(newV));
+    }
+
+    @FXML private void newMail(ActionEvent event){
         Window owner = ((Node)event.getSource()).getScene().getWindow();
 
         String id = ((Button)event.getSource()).getId();
@@ -47,16 +52,15 @@ public class QuickActionsController {
         stageWrapper.open();
     }
 
-    public void deleteMail() {
+    @FXML private void deleteMail() {
         //TODO
     }
 
     private void setOnline(boolean online){
-        /*
         newBtn.setDisable(!online);
         replyBtn.setDisable(!online);
         replyAllBtn.setDisable(!online);
         forwardBtn.setDisable(!online);
-        deleteBtn.setDisable(!online);*/
+        deleteBtn.setDisable(!online);
     }
 }
