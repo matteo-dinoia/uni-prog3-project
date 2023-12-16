@@ -15,22 +15,14 @@ public class MainController {
     public void initializeModel(MailBox mailBox){
         this.mailBox = mailBox;
 
-        setOnline(false);
-        mailBox.getOnlineProperty().addListener((observable, old, value) -> setOnline(value));
-
         receivedListView.setItems(mailBox.getObservableListReceived());
         sentListView.setItems(mailBox.getObservableListSent());
     }
 
-    @FXML private void updateSelectedSent(){ showMail(sentListView.getSelectionModel().getSelectedItem()); }
-    @FXML private void updateSelectedReceived(){ showMail(receivedListView.getSelectionModel().getSelectedItem()); }
+    @FXML private void updateSelectedSent(){ /*showMail(sentListView.getSelectionModel().getSelectedItem()); */}
+    @FXML private void updateSelectedReceived(){ /*showMail(receivedListView.getSelectionModel().getSelectedItem());*/ }
 
-    private void showMail(Mail toShow){
-        /*if(toShow == null)
-            contentText.setText("");
-        else
-            contentText.setText("\n" + toShow.formatted() + "\n");*/
-    }
+
 
     @FXML private void resetSelected(){
         if(sentListView == null || receivedListView == null)
@@ -38,15 +30,8 @@ public class MainController {
 
         sentListView.getSelectionModel().clearSelection();
         receivedListView.getSelectionModel().clearSelection();
-        showMail(null);
+        /*showMail(null);*/
     }
 
-    private void setOnline(boolean online){
-        /*
-        newBtn.setDisable(!online);
-        replyBtn.setDisable(!online);
-        replyAllBtn.setDisable(!online);
-        forwardBtn.setDisable(!online);
-        deleteBtn.setDisable(!online);*/
-    }
+
 }

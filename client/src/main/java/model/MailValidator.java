@@ -1,19 +1,24 @@
 package model;
 
-import java.io.Serializable;
+public class MailValidator {
+    public boolean checkValidity(Mail mail){
+        if(mail == null || !isAddressValid(mail.getFrom()))
+            return false;
 
-public class MailAddress implements Serializable {
-    private final String address;
+        String[] destinations = mail.getTo().split(",");
+        if(destinations.length == 0) return false;
 
-    public MailAddress(String address){
-        this.address = address;
+        for(String dest : destinations){
+            if(!isAddressValid(dest)) return false;
+        }
+
+        return true;
     }
 
-    @Override public String toString() { return address; }
-
-    public boolean checkValidity(){ // Move out of the class
+    public boolean isAddressValid(String address){ // Move out of the class
         if(address == null || address.isEmpty())
             return false;
+        address = address.trim();
 
         final int START = 0;
         final int AFTER_AT = 1;
@@ -34,6 +39,7 @@ public class MailAddress implements Serializable {
             }
         }
 
-        return state == ACCEPTED;
+        return state != ACCEPTED;
     }
+
 }
