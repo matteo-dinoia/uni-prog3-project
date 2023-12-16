@@ -5,7 +5,9 @@ import interfaces.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import java.net.URL;
 
 import java.io.IOException;
 
@@ -31,6 +33,12 @@ public class App extends Application {
         stage.setMinWidth(WIDTH);
         stage.setMinHeight(HEIGHT);
         stage.show();
+
+        URL imageURL = getClass().getResource("img/icon.png");
+        if(imageURL != null)
+            stage.getIcons().add(new Image(imageURL.toExternalForm()));
+        else
+            System.err.println("Couldn't load logo");
     }
 
     private void setupServer(Logger logger){

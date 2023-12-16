@@ -9,6 +9,9 @@ public class Mail implements Serializable {
     private final List<MailAddress> destinations = new ArrayList<>();
     private final String object;
     private final String content;
+    //TODO USE THEM
+    private int id;
+    private long timestamp;
 
     public Mail(String from, String firstDest, String object, String content){
         source = new MailAddress(from);

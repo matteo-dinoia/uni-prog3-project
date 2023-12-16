@@ -16,8 +16,8 @@ import java.net.URL;
 public class StageWrapper {
     private Stage stage;
 
-
-    public StageWrapper(Stage st, String title, int minWidth, int minHeight){ // Set null to create new stage
+    // Set null to create new stage
+    public StageWrapper(Stage st, String title, int minWidth, int minHeight){
         if((this.stage = st) == null)
             this.stage = new Stage();
 

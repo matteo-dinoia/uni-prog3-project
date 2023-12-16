@@ -3,6 +3,11 @@ package backend;
 import model.Mail;
 import com.google.gson.Gson;
 import model.MailBox;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.Socket;
+import java.util.List;
 
 import java.io.*;
 import java.net.Socket;
@@ -10,7 +15,7 @@ import java.util.List;
 
 // TODO need to be scheduled
 public class Updater implements Runnable{
-    private MailBox mailBox;
+    private final MailBox mailBox;
     private int lastUpdate = -1;
 
     public Updater(MailBox mailBox){
@@ -18,32 +23,32 @@ public class Updater implements Runnable{
     }
 
     @Override  public void run() {
-        System.out.println("Updating");
-
-        // TODO actual update
-        if(lastUpdate == -1){
-            tryConnection();
-            lastUpdate = 0;
-        }
+        mailBox.setOnline(tryConnection());
     }
 
-    private void tryConnection() {
+    private boolean tryConnection() {
+        // TODO actual update
         Gson gson = new Gson();
-        try(Socket socket = new Socket("localhost", 60421);){
-            try(Reader input = new InputStreamReader(socket.getInputStream());){
+        try(Socket socket = new Socket("localhost", 60421)){
+            try(Reader input = new InputStreamReader(socket.getInputStream())){
+                if(lastUpdate != -1) return true;
+
                 Mail[] m;
                 m = gson.fromJson(input, Mail[].class);
 
                 mailBox.add(List.of(m));
+                lastUpdate = 0;
+                return true;
             }catch (IOException exc){
                 System.err.println("ERROR: during communication with client");
             }
         } catch (IOException e) {
-            System.err.println("ERROR: during initialization of connection");
+            // Do nothing because there it is a internet problem
         }catch (Throwable throwable){
-            throwable.printStackTrace();
+            System.err.println("ERROR: while manipulating data: " + throwable.getMessage()); //TODO Remove
         }
 
+        return false;
     }
 
 

@@ -4,40 +4,51 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<SplitPane dividerPositions="0.4" stylesheets="@css/general.css"
+<BorderPane stylesheets="@css/general.css"
            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="fontend.MainController">
 
-    <TabPane minWidth="200" tabClosingPolicy="UNAVAILABLE">
-        <Tab onSelectionChanged="#resetSelected" text="Received">
-            <ListView fx:id="receivedListView" onMouseClicked="#updateSelectedReceived" />
-        </Tab>
-        <Tab onSelectionChanged="#resetSelected" text="Sent">
-            <ListView fx:id="sentListView" onMouseClicked="#updateSelectedSent" />
-        </Tab>
-    </TabPane>
+    <center>
+        <SplitPane dividerPositions="0.4">
+            <TabPane minWidth="200" tabClosingPolicy="UNAVAILABLE">
+                <Tab onSelectionChanged="#resetSelected" text="Received">
+                    <ListView fx:id="receivedListView" onMouseClicked="#updateSelectedReceived" />
+                </Tab>
+                <Tab onSelectionChanged="#resetSelected" text="Sent">
+                    <ListView fx:id="sentListView" onMouseClicked="#updateSelectedSent" />
+                </Tab>
+            </TabPane>
 
-    <BorderPane minWidth="400">
-        <center>
-            <TextArea fx:id="contentText" wrapText="true" editable="false"/>
-        </center>
+            <BorderPane minWidth="400">
+                <center>
+                    <TextArea fx:id="contentText" wrapText="true" editable="false"/>
+                </center>
 
-        <bottom>
-            <HBox>
-                <Button onAction="#newMail" maxWidth="Infinity" text="New" HBox.hgrow="ALWAYS">
-                    <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
-                </Button>
-                <Button fx:id="replyBtn" onAction="#newMail" maxWidth="Infinity" text="Reply" HBox.hgrow="ALWAYS">
-                    <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
-                </Button>
-                <Button fx:id="replyAllBtn" onAction="#newMail" maxWidth="Infinity" text="Reply All" HBox.hgrow="ALWAYS">
-                    <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
-                </Button>
-                <Button fx:id="forwardBtn" onAction="#newMail" maxWidth="Infinity" text="Forward" HBox.hgrow="ALWAYS">
-                    <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
-                </Button>
-            </HBox>
-        </bottom>
-    </BorderPane>
+                <bottom>
+                    <HBox>
+                        <Button fx:id="newBtn" onAction="#newMail" maxWidth="Infinity" text="New" HBox.hgrow="ALWAYS">
+                            <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
+                        </Button>
+                        <Button fx:id="replyBtn" onAction="#newMail" maxWidth="Infinity" text="Reply" HBox.hgrow="ALWAYS">
+                            <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
+                        </Button>
+                        <Button fx:id="replyAllBtn" onAction="#newMail" maxWidth="Infinity" text="Reply All" HBox.hgrow="ALWAYS">
+                            <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
+                        </Button>
+                        <Button fx:id="forwardBtn" onAction="#newMail" maxWidth="Infinity" text="Forward" HBox.hgrow="ALWAYS">
+                            <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
+                        </Button>
+                        <Button fx:id="deleteBtn" onAction="#deleteMail" text="🗑">
+                            <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
+                        </Button>
+                    </HBox>
+                </bottom>
+            </BorderPane>
+        </SplitPane>
+    </center>
 
-</SplitPane>
+    <bottom>
+        <Label fx:id="statusLabel"/>
+    </bottom>
+
+</BorderPane>

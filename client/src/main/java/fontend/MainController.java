@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Label;
 import javafx.stage.Window;
 import model.Mail;
 import model.MailBox;
@@ -17,11 +18,16 @@ public class MainController {
     @FXML private ListView<Mail> receivedListView;
     @FXML private ListView<Mail> sentListView;
     @FXML private TextArea contentText;
+    @FXML private Label statusLabel;
+    @FXML private Button newBtn, replyBtn, replyAllBtn, forwardBtn, deleteBtn;
     //Field
     private MailBox mailBox;
 
     public void initializeModel(MailBox mailBox){
         this.mailBox = mailBox;
+
+        setOnline(false);
+        mailBox.getOnlineProperty().addListener((observable, old, value) -> setOnline(value));
 
         receivedListView.setItems(mailBox.getObservableListReceived());
         sentListView.setItems(mailBox.getObservableListSent());
@@ -32,19 +38,18 @@ public class MainController {
 
     private void showMail(Mail toShow){
         if(toShow == null)
-            return;
-
-        // TODO keep selected
-        contentText.setText("\n" + toShow.formatted() + "\n");
+            contentText.setText("");
+        else
+            contentText.setText("\n" + toShow.formatted() + "\n");
     }
 
     @FXML private void resetSelected(){
         if(sentListView == null || receivedListView == null)
-            return;
+            return; // because it is called when not finished initializing
 
         sentListView.getSelectionModel().clearSelection();
         receivedListView.getSelectionModel().clearSelection();
-        showMail(new Mail("", "", "", ""));
+        showMail(null);
     }
 
     @FXML private void newMail(ActionEvent event){
@@ -64,6 +69,7 @@ public class MainController {
     private void openDialog(Window owner, Mail startPoint){
         StageWrapper stageWrapper = new StageWrapper(null, "Mail editor", 500, 400);
         stageWrapper.setModal(owner);
+        stageWrapper.setIcon(getClass().getResource("img/icon.png"));
 
         MailEditorController contrEditor = stageWrapper.setRootAndGetController(getClass().getResource("mail-editor-view.fxml"));
         if (contrEditor != null){
@@ -72,5 +78,22 @@ public class MainController {
         }
 
         stageWrapper.open();
+    }
+
+    private void setOnline(boolean online){
+        if(online)
+            statusLabel.setText("Online");
+        else
+            statusLabel.setText("Cannot connect server (possibly no internet)");
+
+        newBtn.setDisable(!online);
+        replyBtn.setDisable(!online);
+        replyAllBtn.setDisable(!online);
+        forwardBtn.setDisable(!online);
+        deleteBtn.setDisable(!online);
+    }
+
+    public void deleteMail() {
+        //TODO
     }
 }

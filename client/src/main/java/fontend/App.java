@@ -17,7 +17,7 @@ public class App extends Application{
     private final static String TITLE = "Mail Client";
     private final static int WIDTH = 800;
     private final static int HEIGHT = 500;
-    private final static int TIME_TO_UPDATE = 10;
+    private final static int TIME_TO_UPDATE = 5;
     // Fields
     private StageWrapper stageWrapper;
     private final ScheduledExecutorService scheduler = newScheduledThreadPool(1);
@@ -54,7 +54,7 @@ public class App extends Application{
 
     private void setParameters(){
         // Icon by Icons8 at https://icons8.com/icon/xLIkjgcmFOsC/mail
-        stageWrapper.setIcon(App.class.getResource("icon.png"));
+        stageWrapper.setIcon(getClass().getResource("img/icon.png"));
         stageWrapper.setOnClose((event) -> scheduler.shutdownNow());
     }
 
