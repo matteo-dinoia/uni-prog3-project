@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="App" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="fontend.App" />
+    <option name="MAIN_CLASS_NAME" value="frontend.App" />
     <module name="client" />
     <method v="2">
       <option name="Make" enabled="true" />

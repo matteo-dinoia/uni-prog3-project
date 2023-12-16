@@ -10,6 +10,7 @@ public class StatusBarController {
 
     @FXML private void initialize(){
         mailBox.getOnlineProperty().addListener((changed, oldV, newV) -> setOnline(newV));
+        setOnline(mailBox.getOnlineProperty().get());
     }
 
     private void setOnline(boolean online) {

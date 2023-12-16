@@ -20,6 +20,7 @@ public class QuickActionsController {
 
     @FXML private void initialize(){
         mailBox.getOnlineProperty().addListener((changed, oldV, newV) -> setOnline(newV));
+        setOnline(mailBox.getOnlineProperty().get());
     }
 
     @FXML private void newMail(ActionEvent event){

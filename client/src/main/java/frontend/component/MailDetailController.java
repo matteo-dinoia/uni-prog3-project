@@ -10,11 +10,11 @@ public class MailDetailController {
     private final MailBox mailBox = MailBox.mBoxTmp;
 
     @FXML private void initialize() {
-        updateMail();
         mailBox.selectedMail.getFromProperty().addListener((vhanged, oldV, newV) -> updateMail());
         mailBox.selectedMail.getToProperty().addListener((vhanged, oldV, newV) -> updateMail());
         mailBox.selectedMail.getObjectProperty().addListener((vhanged, oldV, newV) -> updateMail());
         mailBox.selectedMail.getContentProperty().addListener((vhanged, oldV, newV) -> updateMail());
+        updateMail();
     }
 
     private void updateMail(){
