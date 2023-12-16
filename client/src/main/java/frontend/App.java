@@ -1,7 +1,7 @@
-package fontend;
+package frontend;
 
 import backend.Updater;
-import fontend.util.StageWrapper;
+import frontend.util.StageWrapper;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import model.MailBox;

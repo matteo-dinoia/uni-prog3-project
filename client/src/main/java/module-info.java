@@ -4,13 +4,13 @@ module Client {
     requires com.google.gson;
 
 
-    opens fontend to javafx.fxml;
-    exports fontend;
+    opens frontend to javafx.fxml;
+    exports frontend;
     exports interfaces;
-    exports fontend.util;
+    exports frontend.util;
     exports model;
     opens model;
-    opens fontend.util to javafx.fxml;
-    exports fontend.component;
-    opens fontend.component to javafx.fxml;
+    opens frontend.util to javafx.fxml;
+    exports frontend.component;
+    opens frontend.component to javafx.fxml;
 }

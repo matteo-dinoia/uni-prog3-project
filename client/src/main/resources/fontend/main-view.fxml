@@ -6,7 +6,7 @@
 
 <BorderPane stylesheets="@css/general.css"
            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="fontend.MainController">
+           fx:controller="frontend.MainController">
 
     <center>
         <SplitPane dividerPositions="0.4">

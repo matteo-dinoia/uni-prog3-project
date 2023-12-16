@@ -1,4 +1,4 @@
-package fontend;
+package frontend;
 
 import interfaces.EndStatusListener;
 import javafx.fxml.FXML;

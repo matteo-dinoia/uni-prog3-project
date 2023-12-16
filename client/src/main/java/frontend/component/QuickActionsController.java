@@ -1,9 +1,9 @@
-package fontend.component;
+package frontend.component;
 
 import backend.Sender;
-import fontend.MailEditorController;
-import fontend.MainController;
-import fontend.util.StageWrapper;
+import frontend.MailEditorController;
+import frontend.MainController;
+import frontend.util.StageWrapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;

@@ -5,7 +5,7 @@
 <?import javafx.geometry.Insets?>
 
 <HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="fontend.component.QuickActionsController">
+      fx:controller="frontend.component.QuickActionsController">
     <Button fx:id="newBtn" onAction="#newMail" maxWidth="Infinity" text="New" HBox.hgrow="ALWAYS">
         <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
     </Button>

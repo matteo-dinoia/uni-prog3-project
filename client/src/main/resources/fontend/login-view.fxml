@@ -6,7 +6,7 @@
 
 <VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             alignment="CENTER" stylesheets="@css/general.css"
-            fx:controller="fontend.LoginController">
+            fx:controller="frontend.LoginController">
 
     <Label text="Insert username">
         <VBox.margin><Insets topRightBottomLeft="20.0" /></VBox.margin>

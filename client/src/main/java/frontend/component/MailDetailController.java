@@ -1,4 +1,4 @@
-package fontend.component;
+package frontend.component;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;

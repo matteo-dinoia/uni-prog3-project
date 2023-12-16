@@ -1,4 +1,4 @@
-package fontend.util;
+package frontend.util;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
