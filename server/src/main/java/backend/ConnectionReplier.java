@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class ConnectionReplier implements Runnable{
     private final Logger logger;
@@ -20,15 +21,16 @@ public class ConnectionReplier implements Runnable{
     }
 
 
-    @Override public void run() {
-        try(Writer output = new OutputStreamWriter(socket.getOutputStream());){
-            logger.log("START COMMUNITCATION WITH CLIENT");
-            String s = gson.toJson(testOperation());
-            logger.log("RESPONDING (num char: " + s.length() + ")");
-            output.write(s);
-        }catch (IOException exc){
+    @Override
+    public void run() {
+        logger.log("INITIALIZED CONNECTION");
+        try (Scanner scanner = new Scanner(socket.getInputStream())) {
+            try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)) {
+                replyInternal(scanner, writer);
+            }
+        } catch (IOException exc) {
             logger.log("ERROR: during communication with client");
-        } catch (Throwable throwable){
+        } catch (Throwable throwable) {
             System.err.println("ERROR: while manipulating data: " + throwable.getMessage()); //TODO Remove
         } finally {
             try {
