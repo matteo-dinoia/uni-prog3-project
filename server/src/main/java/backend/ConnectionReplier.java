@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ConnectionReplier implements Runnable{
+public class ConnectionReplier implements Runnable {
     private final Logger logger;
     private final Socket socket;
     private final Gson gson = new Gson();
@@ -42,10 +42,10 @@ public class ConnectionReplier implements Runnable{
         logger.log("ENDED");
     }
 
-    private Operation testOperation(){
+    private Operation testOperation() {
         writeHardcodedTestData();
 
-        try(Reader reader = new InputStreamReader(new FileInputStream("mail/file.json"))){
+        try (Reader reader = new InputStreamReader(new FileInputStream("mail/file.json"))) {
             return gson.fromJson(reader, Operation.class);
         } catch (IOException e) {
             logger.log("ERROR: coudn't read from file");
@@ -54,7 +54,7 @@ public class ConnectionReplier implements Runnable{
         return new Operation("test", -1, new ArrayList<>());
     }
 
-    private void writeHardcodedTestData(){
+    private void writeHardcodedTestData() {
         /*try(Writer writer = new OutputStreamWriter(new FileOutputStream("mail/file.json"))){
             SimpleMail[] mails = {
                     new SimpleMail("testuser@gmail.com", "a", "b1", "c"),
