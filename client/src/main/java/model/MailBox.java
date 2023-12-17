@@ -3,7 +3,7 @@ package model;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import backend.SimpleMail;
+import model.operationData.SimpleMail;
 import java.util.List;
 
 public class MailBox {

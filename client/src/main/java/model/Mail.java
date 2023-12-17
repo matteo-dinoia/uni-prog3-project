@@ -1,7 +1,7 @@
 package model;
 
 import javafx.beans.property.SimpleStringProperty;
-import backend.SimpleMail;
+import model.operationData.SimpleMail;
 import java.io.Serializable;
 
 public class Mail implements Serializable {
