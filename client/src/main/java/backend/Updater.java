@@ -22,6 +22,8 @@ public class Updater implements Runnable{
 
     @Override  public void run() {
         boolean online = updateData();
+        if(online)
+            lastUpdate = 1;
         Platform.runLater(() -> mailBox.setOnline(online));
     }
 
@@ -45,6 +47,14 @@ public class Updater implements Runnable{
         return false;
     }
 
+    private void updateDataInternal(Scanner scanner, PrintWriter writer) throws IOException {
+        Operation requestUpdate = new Operation(mailBox.getOwner(), lastUpdate, new ArrayList<>());
+        writer.println(gson.toJson(requestUpdate, Operation.class));
 
+        String s = scanner.nextLine();
+        Operation op = gson.fromJson(s, Operation.class);
+        Platform.runLater(() -> mailBox.add(op.mailList()));
+        lastUpdate = 0;
+    }
 
 }
