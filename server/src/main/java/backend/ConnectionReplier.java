@@ -69,4 +69,28 @@ public class ConnectionReplier implements Runnable{
             e.printStackTrace();
         }*/
     }
+
+    private void replyInternal(Scanner scanner, PrintWriter writer) throws IOException {
+        String s = scanner.nextLine();
+        Operation op = gson.fromJson(s, Operation.class);
+
+        if (op.operation() == Operation.OPERATION_GETALL)
+            getAll(writer);
+        else if (op.operation() > 0)
+            getNew(writer);
+        else
+            logger.log("ERROR: invalid operation");
+    }
+
+    private void getAll(PrintWriter writer){
+        String res = gson.toJson(testOperation());
+        logger.log("RESPONDING (num char: " + res.length() + ")");
+        writer.println(res);
+    }
+
+    private void getNew(PrintWriter writer){
+        String res = gson.toJson(new Operation("test", 0, new ArrayList<>()));
+        logger.log("RESPONDING NOTHING.");
+        writer.println(res);
+    }
 }
