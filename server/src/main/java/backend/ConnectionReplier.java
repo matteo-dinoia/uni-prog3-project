@@ -8,8 +8,9 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-public class ConnectionReplier implements Runnable{
+public class ConnectionReplier implements Runnable {
     private final Logger logger;
     private final Socket socket;
     private final Gson gson = new Gson();
@@ -20,15 +21,16 @@ public class ConnectionReplier implements Runnable{
     }
 
 
-    @Override public void run() {
-        try(Writer output = new OutputStreamWriter(socket.getOutputStream());){
-            logger.log("START COMMUNITCATION WITH CLIENT");
-            String s = gson.toJson(testOperation());
-            logger.log("RESPONDING (num char: " + s.length() + ")");
-            output.write(s);
-        }catch (IOException exc){
+    @Override
+    public void run() {
+        logger.log("INITIALIZED CONNECTION");
+        try (Scanner scanner = new Scanner(socket.getInputStream())) {
+            try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)) {
+                replyInternal(scanner, writer);
+            }
+        } catch (IOException exc) {
             logger.log("ERROR: during communication with client");
-        } catch (Throwable throwable){
+        } catch (Throwable throwable) {
             System.err.println("ERROR: while manipulating data: " + throwable.getMessage()); //TODO Remove
         } finally {
             try {
@@ -40,10 +42,10 @@ public class ConnectionReplier implements Runnable{
         logger.log("ENDED");
     }
 
-    private Operation testOperation(){
+    private Operation testOperation() {
         writeHardcodedTestData();
 
-        try(Reader reader = new InputStreamReader(new FileInputStream("mail/file.json"))){
+        try (Reader reader = new InputStreamReader(new FileInputStream("mail/file.json"))) {
             return gson.fromJson(reader, Operation.class);
         } catch (IOException e) {
             logger.log("ERROR: coudn't read from file");
@@ -52,7 +54,7 @@ public class ConnectionReplier implements Runnable{
         return new Operation("test", -1, new ArrayList<>());
     }
 
-    private void writeHardcodedTestData(){
+    private void writeHardcodedTestData() {
         /*try(Writer writer = new OutputStreamWriter(new FileOutputStream("mail/file.json"))){
             SimpleMail[] mails = {
                     new SimpleMail("testuser@gmail.com", "a", "b1", "c"),
@@ -66,5 +68,29 @@ public class ConnectionReplier implements Runnable{
         } catch (IOException e) {
             e.printStackTrace();
         }*/
+    }
+
+    private void replyInternal(Scanner scanner, PrintWriter writer) throws IOException {
+        String s = scanner.nextLine();
+        Operation op = gson.fromJson(s, Operation.class);
+
+        if (op.operation() == Operation.OPERATION_GETALL)
+            getAll(writer);
+        else if (op.operation() > 0)
+            getNew(writer);
+        else
+            logger.log("ERROR: invalid operation");
+    }
+
+    private void getAll(PrintWriter writer){
+        String res = gson.toJson(testOperation());
+        logger.log("RESPONDING (num char: " + res.length() + ")");
+        writer.println(res);
+    }
+
+    private void getNew(PrintWriter writer){
+        String res = gson.toJson(new Operation("test", 0, new ArrayList<>()));
+        logger.log("RESPONDING NOTHING.");
+        writer.println(res);
     }
 }
