@@ -4,15 +4,17 @@ import com.google.gson.Gson;
 import javafx.application.Platform;
 import model.MailBox;
 import model.operationData.Operation;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+
+import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 // TODO need to be scheduled
 public class Updater implements Runnable{
     private final MailBox mailBox;
-    private int lastUpdate = -1;
+    private int lastUpdate = Operation.OPERATION_GETALL;
+    private final Gson gson = new Gson();
 
     public Updater(MailBox mailBox){
         this.mailBox = mailBox;
@@ -25,18 +27,14 @@ public class Updater implements Runnable{
 
     private boolean updateData() {
         // TODO actual update
-        Gson gson = new Gson();
         try(Socket socket = new Socket("localhost", 60421)){
-            try(Reader input = new InputStreamReader(socket.getInputStream())){
-                if(lastUpdate != -1) return true;
-
-                Operation op = gson.fromJson(input, Operation.class);
-
-                mailBox.add(op.mailList());
-                lastUpdate = 0;
-                return true;
-            }catch (IOException exc){
-                System.err.println("ERROR: during communication with client");
+            try(PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)){
+                try(Scanner scanner = new Scanner(socket.getInputStream())){
+                    updateDataInternal(scanner, writer);
+                    return true;
+                }
+            }catch (IOException exc) {
+                System.err.println("ERROR: during communication with server: " + exc.getMessage());
             }
         } catch (IOException e) {
             // Do nothing because there it is a internet problem
