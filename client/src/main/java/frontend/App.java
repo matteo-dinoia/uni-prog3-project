@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import model.MailBox;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import static java.util.concurrent.Executors.newScheduledThreadPool;
+import java.util.concurrent.Executors;
 
 public class App extends Application{
     // Constants
@@ -17,7 +17,7 @@ public class App extends Application{
     private final static int TIME_TO_UPDATE = 5;
     // Fields
     private StageWrapper stageWrapper;
-    private final ScheduledExecutorService scheduler = newScheduledThreadPool(1);
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     @Override public void start(Stage st){
         this.stageWrapper = new StageWrapper(st, TITLE, WIDTH, HEIGHT);

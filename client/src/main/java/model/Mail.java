@@ -1,14 +1,14 @@
 package model;
 
-import model.operationData.SimpleMail;
 import javafx.beans.property.SimpleStringProperty;
+import backend.SimpleMail;
 import java.io.Serializable;
 
 public class Mail implements Serializable {
     private final SimpleStringProperty source = new SimpleStringProperty("");
     private final SimpleStringProperty destinations = new SimpleStringProperty("");
-    private SimpleStringProperty object = new SimpleStringProperty("");
-    private SimpleStringProperty content = new SimpleStringProperty("");
+    private final SimpleStringProperty object = new SimpleStringProperty("");
+    private final SimpleStringProperty content = new SimpleStringProperty("");
     //TODO USE THEM
     private int id;
     private long timestamp;

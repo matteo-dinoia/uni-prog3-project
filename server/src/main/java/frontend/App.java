@@ -7,9 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import java.net.URL;
-
 import java.io.IOException;
+import java.net.URL;
 
 public class App extends Application {
     private static final int WIDTH = 500;
@@ -28,7 +27,7 @@ public class App extends Application {
     }
 
     private void setParameters(){
-        stage.setTitle("Hello!");
+        stage.setTitle("Mail Server");
 
         stage.setMinWidth(WIDTH);
         stage.setMinHeight(HEIGHT);

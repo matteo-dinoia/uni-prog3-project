@@ -1,29 +1,47 @@
 package model;
 
-import model.operationData.SimpleMail;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import backend.SimpleMail;
 import java.util.List;
 
 public class MailBox {
     public static MailBox mBoxTmp = null;
-    public final Mail selectedMail = new Mail("ciao0", "ciao1", "ciao2", "ciao3");
     // Field
-    private final String owner;
+    private final Mail selectedMail = new Mail("", "", "", ""); // TODO make private
+    private final SimpleBooleanProperty selectionExist = new SimpleBooleanProperty(false);
     private final SimpleBooleanProperty online = new SimpleBooleanProperty(false);
+    // --------
+    private final String owner;
     private final ObservableList<Mail> listReceived = FXCollections.observableArrayList();
     private final ObservableList<Mail> listSent = FXCollections.observableArrayList();
 
     public MailBox(String owner){
         this.owner = owner;
     }
-
-    public ObservableList<Mail> getObservableListSent(){ return listSent; }
-    public ObservableList<Mail> getObservableListReceived(){ return listReceived; }
     public String getOwner() { return owner; }
-    public SimpleBooleanProperty getOnlineProperty(){ return online; }
+
+
+    public ObservableList<Mail> observableListSent(){ return listSent; }
+    public ObservableList<Mail> observableListReceived(){ return listReceived; }
+    public SimpleBooleanProperty onlineProperty(){ return online; }
+    public SimpleBooleanProperty selectionExistProperty(){ return selectionExist; }
+
+    public Mail getSelectedMail(){ return selectedMail; }
+    public void setSelectedMail(Mail mail){
+        if(mail == null){
+            mail = new Mail("", "", "", "");
+            selectionExist.set(false);
+        }else {
+            selectionExist.set(true);
+        }
+
+        selectedMail.getFromProperty().bind(mail.getFromProperty());
+        selectedMail.getToProperty().bind(mail.getToProperty());
+        selectedMail.getObjectProperty().bind(mail.getObjectProperty());
+        selectedMail.getContentProperty().bind(mail.getContentProperty());
+    }
 
     public void add(Mail mail) {
         if(mail == null)
@@ -47,7 +65,5 @@ public class MailBox {
             this.add(new Mail(toAdd));
     }
 
-    public void setOnline(boolean value) {
-        Platform.runLater(() -> online.set(value));
-    }
+    public void setOnline(boolean value) { online.setValue(value); }
 }

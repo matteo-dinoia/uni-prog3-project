@@ -3,15 +3,18 @@ package frontend;
 import interfaces.EndStatusListener;
 import interfaces.EndStatusNotifier;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import model.Mail;
+import model.MailBox;
 
 public class MailEditorController implements EndStatusNotifier<Mail> {
     // FXML
     @FXML private TextField toText;
     @FXML private TextField objText;
     @FXML private TextArea contentText;
+    @FXML private Button sendBtn;
     // Fields
     private Mail mailCreated;
     private EndStatusListener<Mail> listener;
@@ -34,5 +37,9 @@ public class MailEditorController implements EndStatusNotifier<Mail> {
 
     @Override public void setOptionListener(EndStatusListener<Mail> listener) {
         this.listener = listener;
+    }
+
+    public void initializeModel(MailBox mailBox) {
+        sendBtn.disableProperty().bind(mailBox.onlineProperty().not());
     }
 }

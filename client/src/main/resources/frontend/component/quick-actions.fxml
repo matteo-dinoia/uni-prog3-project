@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
 
 <HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="frontend.component.QuickActionsController">
+      fx:controller="frontend.component.QuickActionsController" fx:id="btnPanel">
     <Button fx:id="newBtn" onAction="#newMail" maxWidth="Infinity" text="New" HBox.hgrow="ALWAYS">
         <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
     </Button>
@@ -18,7 +18,7 @@
     <Button fx:id="forwardBtn" onAction="#newMail" maxWidth="Infinity" text="Forward" HBox.hgrow="ALWAYS">
         <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
     </Button>
-    <Button fx:id="deleteBtn" onAction="#deleteMail" text="🗑">
+    <Button fx:id="deleteBtn" onAction="#deleteMail" text="🗑" style="-fx-text-fill: red">
         <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
     </Button>
 </HBox>

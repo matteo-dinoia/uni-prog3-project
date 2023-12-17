@@ -8,11 +8,11 @@ public class StatusBarController {
     // FXML
     @FXML private Label statusLabel;
     // Field
-    private final MailBox mailBox = MailBox.mBoxTmp;
+    private final MailBox mailBox = MailBox.mBoxTmp; // TODO change
 
     @FXML private void initialize(){
-        mailBox.getOnlineProperty().addListener((changed, oldV, newV) -> setOnline(newV));
-        setOnline(mailBox.getOnlineProperty().get());
+        mailBox.onlineProperty().addListener((changed, oldV, newV) -> setOnline(newV));
+        setOnline(mailBox.onlineProperty().get());
     }
 
     private void setOnline(boolean online) {

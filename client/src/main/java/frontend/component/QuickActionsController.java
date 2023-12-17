@@ -8,19 +8,21 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
 import javafx.stage.Window;
 import model.Mail;
 import model.MailBox;
 
 public class QuickActionsController {
     // FXML
-    @FXML private Button newBtn, replyBtn, replyAllBtn, forwardBtn, deleteBtn;
+    @FXML private HBox btnPanel;
+    @FXML private Button deleteBtn;
     // Field
-    private final MailBox mailBox = MailBox.mBoxTmp;
+    private final MailBox mailBox = MailBox.mBoxTmp; // TODO change
 
     @FXML private void initialize(){
-        mailBox.getOnlineProperty().addListener((changed, oldV, newV) -> setOnline(newV));
-        setOnline(mailBox.getOnlineProperty().get());
+        btnPanel.disableProperty().bind(mailBox.onlineProperty().not());
+        deleteBtn.disableProperty().bind(mailBox.selectionExistProperty().not());
     }
 
     @FXML private void newMail(ActionEvent event){
@@ -44,6 +46,7 @@ public class QuickActionsController {
 
         MailEditorController contrEditor = stageWrapper.setRootAndGetController(MainController.class.getResource("mail-editor-view.fxml"));
         if (contrEditor != null){
+            contrEditor.initializeModel(mailBox);
             contrEditor.setOptionListener((Mail mail) -> { mailBox.add(mail); stageWrapper.close(); new Thread(new Sender(mail)).start(); });
             contrEditor.setDefaultMail(startPoint);
         }else{
@@ -55,13 +58,5 @@ public class QuickActionsController {
 
     @FXML private void deleteMail() {
         //TODO
-    }
-
-    private void setOnline(boolean online){
-        newBtn.setDisable(!online);
-        replyBtn.setDisable(!online);
-        replyAllBtn.setDisable(!online);
-        forwardBtn.setDisable(!online);
-        deleteBtn.setDisable(!online);
     }
 }

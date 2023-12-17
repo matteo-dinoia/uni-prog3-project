@@ -8,17 +8,17 @@ public class MailDetailController {
     // FXML
     @FXML private TextArea contentText;
     // Field
-    private final MailBox mailBox = MailBox.mBoxTmp;
+    private final MailBox mailBox = MailBox.mBoxTmp; // TODO change
 
     @FXML private void initialize() {
-        mailBox.selectedMail.getFromProperty().addListener((vhanged, oldV, newV) -> updateMail());
-        mailBox.selectedMail.getToProperty().addListener((vhanged, oldV, newV) -> updateMail());
-        mailBox.selectedMail.getObjectProperty().addListener((vhanged, oldV, newV) -> updateMail());
-        mailBox.selectedMail.getContentProperty().addListener((vhanged, oldV, newV) -> updateMail());
+        mailBox.getSelectedMail().getFromProperty().addListener((vhanged, oldV, newV) -> updateMail());
+        mailBox.getSelectedMail().getToProperty().addListener((vhanged, oldV, newV) -> updateMail());
+        mailBox.getSelectedMail().getObjectProperty().addListener((vhanged, oldV, newV) -> updateMail());
+        mailBox.getSelectedMail().getContentProperty().addListener((vhanged, oldV, newV) -> updateMail());
         updateMail();
     }
 
     private void updateMail(){
-        contentText.setText( mailBox.selectedMail.formatted());
+        contentText.setText(mailBox.getSelectedMail().formatted());
     }
 }
