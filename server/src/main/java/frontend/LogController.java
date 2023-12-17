@@ -1,19 +1,26 @@
 package frontend;
 
 import interfaces.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.ListView;
 
 public class LogController implements Logger {
-    @FXML private TextArea logText;
+    // FXML
+    @FXML private ListView<String> logList;
+    // Field
+    private final ObservableList<String> logs = FXCollections.observableArrayList();
 
-    @FXML private void cleanOutput() {
-        logText.setText("");
+    @FXML private void initialize(){
+        logList.setItems(logs);
     }
 
-    public void log(String str){
+    @FXML private void cleanOutput() { logs.clear(); }
+
+    @Override public synchronized void log(String str){
         if(str == null)
             str = "WARNING: logging null value";
-        logText.appendText(str + "\n");
+        logs.add(str);
     }
 }

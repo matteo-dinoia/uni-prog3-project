@@ -1,6 +1,6 @@
 package model;
 
-import backend.SimpleMail;
+import model.operationData.SimpleMail;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;

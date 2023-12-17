@@ -1,12 +1,13 @@
 package backend;
 
 import com.google.gson.Gson;
+import javafx.application.Platform;
 import model.MailBox;
+import model.operationData.Operation;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.Socket;
-import java.util.List;
 
 // TODO need to be scheduled
 public class Updater implements Runnable{
@@ -18,19 +19,20 @@ public class Updater implements Runnable{
     }
 
     @Override  public void run() {
-        mailBox.setOnline(tryConnection());
+        boolean online = updateData();
+        Platform.runLater(() -> mailBox.setOnline(online));
     }
 
-    private boolean tryConnection() {
+    private boolean updateData() {
         // TODO actual update
         Gson gson = new Gson();
         try(Socket socket = new Socket("localhost", 60421)){
             try(Reader input = new InputStreamReader(socket.getInputStream())){
                 if(lastUpdate != -1) return true;
 
-                SimpleMail[] m = gson.fromJson(input, SimpleMail[].class);
+                Operation op = gson.fromJson(input, Operation.class);
 
-                mailBox.add(List.of(m));
+                mailBox.add(op.mailList());
                 lastUpdate = 0;
                 return true;
             }catch (IOException exc){

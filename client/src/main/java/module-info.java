@@ -15,4 +15,6 @@ module Client {
     opens frontend.component to javafx.fxml;
     exports backend;
     opens backend;
+    exports model.operationData;
+    opens model.operationData;
 }

@@ -1,12 +1,14 @@
 package backend;
 
 import interfaces.Logger;
+import javafx.application.Platform;
+
 import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server implements Runnable{
+public class Server implements Runnable, Logger{
     private Logger logger;
 
     private static Server singleInstance;
@@ -31,12 +33,15 @@ public class Server implements Runnable{
                     continue;
                 }
 
-                ConnectionReplier replier = new ConnectionReplier(logger, socket);
+                ConnectionReplier replier = new ConnectionReplier(this, socket);
                 new Thread(replier).start();
             }
         }catch (IOException exc){
-            logger.log("FATAL: cannot open/accept server socket");
+            log("FATAL: cannot open/accept server socket");
         }
     }
 
+    @Override public void log(String str) {
+        Platform.runLater(() -> logger.log(str));
+    }
 }

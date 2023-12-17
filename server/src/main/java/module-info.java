@@ -5,7 +5,7 @@ module Server {
 
 
     exports frontend;
-    exports model;
-    opens model;
     opens frontend to javafx.fxml;
+    exports model.operationData;
+    opens model.operationData;
 }

@@ -1,6 +1,6 @@
 package model;
 
-import backend.SimpleMail;
+import model.operationData.SimpleMail;
 import javafx.beans.property.SimpleStringProperty;
 import java.io.Serializable;
 
@@ -21,8 +21,8 @@ public class Mail implements Serializable {
     }
 
     public Mail(SimpleMail toAdd) {
-        this(toAdd.getSource(), toAdd.getDestinations(),
-                toAdd.getObject(), toAdd.getContent());
+        this(toAdd.source(), toAdd.destinations(),
+                toAdd.object(), toAdd.content());
     }
 
     @Override public String toString() {
