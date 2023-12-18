@@ -8,7 +8,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
 import javafx.stage.Window;
 import model.Mail;
 import model.MailBox;
@@ -35,7 +34,7 @@ public class QuickActionsController {
             case "replyAllBtn" -> new Mail(mailBox.getOwner(), "All", "Re: ", null);
             case "forwardBtn" -> new Mail(mailBox.getOwner(), null, "Fwd: ", null);
             case "deleteBtn" -> new Mail(mailBox.getSelectedMail());
-            default -> new Mail(mailBox.getOwner(), null, null, null);
+            case null, default -> new Mail(mailBox.getOwner(), null, null, null);
         };
 
         openDialog(owner, startPoint, deleteBtn.getId().equals(id));
@@ -53,7 +52,7 @@ public class QuickActionsController {
             contrEditor.setOptionListener((Mail mail) -> {
                 if(isDeletion){
                     // TODO add remover
-                    //mailBox.remove(mail); TODO fix doesn't work
+                    mailBox.remove(mail); //TODO fix doesn't work
                 }else{
                     mailBox.add(mail); // TODO Remove
                     new Thread(new Sender(mail)).start();

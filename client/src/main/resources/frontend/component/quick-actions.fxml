@@ -5,20 +5,22 @@
 <?import javafx.scene.layout.*?>
 
 <HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="frontend.component.QuickActionsController" fx:id="btnPanel">
-    <Button fx:id="newBtn" onAction="#openMailEditor" maxWidth="Infinity" text="New" HBox.hgrow="ALWAYS">
+      fx:controller="frontend.component.QuickActionsController"
+      stylesheets="@../css/component/quick-actions.css">
+
+    <Button onAction="#openMailEditor" text="+" HBox.hgrow="ALWAYS">
         <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
     </Button>
-    <Button fx:id="replyBtn" onAction="#openMailEditor" maxWidth="Infinity" text="Reply" HBox.hgrow="ALWAYS">
+    <Button fx:id="replyBtn" onAction="#openMailEditor" text="Reply" HBox.hgrow="ALWAYS">
         <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
     </Button>
-    <Button fx:id="replyAllBtn" onAction="#openMailEditor" maxWidth="Infinity" text="Reply All" HBox.hgrow="ALWAYS">
+    <Button fx:id="replyAllBtn" onAction="#openMailEditor" text="Reply All" HBox.hgrow="ALWAYS">
         <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
     </Button>
-    <Button fx:id="forwardBtn" onAction="#openMailEditor" maxWidth="Infinity" text="Forward" HBox.hgrow="ALWAYS">
+    <Button fx:id="forwardBtn" onAction="#openMailEditor" text="Forward" HBox.hgrow="ALWAYS">
         <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
     </Button>
-    <Button fx:id="deleteBtn" onAction="#openMailEditor" text="🗑" style="-fx-text-fill: red">
+    <Button fx:id="deleteBtn" onAction="#openMailEditor" text="🗑" >
         <HBox.margin><Insets topRightBottomLeft="10.0"/></HBox.margin>
     </Button>
 </HBox>

@@ -1,0 +1,7 @@
+BorderPane{
+    -fx-min-width:  420px;
+}
+
+TabPane{
+    -fx-min-width:  180px;
+}

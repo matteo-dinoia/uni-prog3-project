@@ -1,0 +1,7 @@
+#replyBtn, #replyAllBtn, #forwardBtn{
+    -fx-max-width: Infinity;
+}
+
+#deleteBtn{
+    -fx-text-fill: red;
+}

@@ -5,6 +5,6 @@
 <!-- TODO rename to connection banner and move style outside -->
 <Label xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
        fx:controller="frontend.component.StatusBarController" fx:id="statusLabel"
-       style="-fx-background-color: rgba(255,242,0,0.50)" maxWidth="Infinity" alignment="CENTER" prefWidth="400">
+       stylesheets="@../css/component/status-bar.css">
     Could't connect to the server
 </Label>

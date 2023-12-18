@@ -3,11 +3,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<SplitPane dividerPositions="0.4" stylesheets="@css/general.css"
+<SplitPane dividerPositions="0.4" stylesheets="@css/general.css, @css/main-view.css"
             xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="frontend.MainController">
 
-    <TabPane minWidth="200" tabClosingPolicy="UNAVAILABLE">
+    <TabPane tabClosingPolicy="UNAVAILABLE">
         <Tab onSelectionChanged="#resetSelected" text="Received">
             <ListView fx:id="receivedListView" onMouseClicked="#updateSelectedReceived" />
         </Tab>
@@ -16,7 +16,7 @@
         </Tab>
     </TabPane>
 
-    <BorderPane minWidth="400">
+    <BorderPane>
         <top>
             <fx:include source="component/status-bar.fxml"/>
         </top>
