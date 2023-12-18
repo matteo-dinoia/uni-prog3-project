@@ -27,18 +27,15 @@
    </left>
 
    <center>
-      <BorderPane styleClass="content-pane">
-         <top>
-            <fx:include source="component/status-bar.fxml"/>
-         </top>
-         <center>
-            <VBox>
-               <Label text="Body:"/>
-               <TextArea fx:id="contentText" VBox.vgrow="ALWAYS" />
-            </VBox>
-
-         </center>
-      </BorderPane>
+      <VBox styleClass="content-pane">
+         <fx:include source="component/status-bar.fxml"/>
+         <Label text="Body:">
+            <VBox.margin><Insets top="20" left="10" right="10"/></VBox.margin>
+         </Label>
+         <TextArea fx:id="contentText" VBox.vgrow="ALWAYS">
+            <VBox.margin><Insets top="5" left="10" right="10" bottom="10"/></VBox.margin>
+         </TextArea>
+      </VBox>
    </center>
 
    <bottom>
