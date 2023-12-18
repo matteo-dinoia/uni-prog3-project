@@ -1,3 +1,17 @@
-TextArea{
-    -fx-wrap-text: true;
+HBox{
+    -fx-padding: 10px 10px 0 10px;
+    -fx-background-color: #f9f9f9;
+}
+
+.hbox-textarea{
+    -fx-padding: 10px;
+}
+
+Label{
+    -fx-min-width: 80px;
+}
+
+TextField {
+    -fx-border-width: 0;
+    -fx-padding: 2px 5px;
 }

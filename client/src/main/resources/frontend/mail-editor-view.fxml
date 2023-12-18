@@ -5,36 +5,36 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-            stylesheets="@css/general.css" fx:controller="frontend.MailEditorController">
+            stylesheets="@css/general.css, @css/mail-editor-view.css"
+            fx:controller="frontend.MailEditorController">
 
-   <!-- TODO to style and clear code -->
    <left>
-      <VBox>
-         <Label fx:id="titleText" text="New mail" style="-fx-font-weight: bolder" />
+      <VBox styleClass="info-pane">
+         <Label fx:id="titleText" text="New mail"/>
          <Label text="From:" />
          <TextField fx:id="fromText" editable="false">
-            <VBox.margin><Insets bottom="10.0" /></VBox.margin>
+            <VBox.margin><Insets bottom="15" top="5" /></VBox.margin>
          </TextField>
          <Label text="To:" />
          <TextField fx:id="toText">
-            <VBox.margin><Insets bottom="10.0" /></VBox.margin>
+            <VBox.margin><Insets bottom="15" top="5" /></VBox.margin>
          </TextField>
          <Label text="Object:"/>
          <TextField fx:id="objText">
-            <VBox.margin><Insets bottom="10.0" /></VBox.margin>
+            <VBox.margin><Insets bottom="15" top="5" /></VBox.margin>
          </TextField>
       </VBox>
    </left>
 
    <center>
-      <BorderPane>
+      <BorderPane styleClass="content-pane">
          <top>
             <fx:include source="component/status-bar.fxml"/>
          </top>
          <center>
             <VBox>
                <Label text="Body:"/>
-               <TextArea fx:id="contentText" wrapText="true" VBox.vgrow="ALWAYS" />
+               <TextArea fx:id="contentText" VBox.vgrow="ALWAYS" />
             </VBox>
 
          </center>

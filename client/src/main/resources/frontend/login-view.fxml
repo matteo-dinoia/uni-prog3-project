@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      alignment="CENTER" stylesheets="@css/general.css, @css/login.css"
+      alignment="CENTER" stylesheets="@css/general.css, @css/login-view.css"
       fx:controller="frontend.LoginController">
 
     <Label styleClass="title" text="Insert username">
