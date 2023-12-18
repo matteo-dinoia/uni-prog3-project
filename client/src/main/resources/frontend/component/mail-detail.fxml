@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.VBox?>
 
-<TextArea xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-          fx:controller="frontend.component.MailDetailController" fx:id="contentText"
-          stylesheets="@../css/component/mail-detail.css" editable="false">
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 
-</TextArea>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="frontend.component.MailDetailController"
+      stylesheets="@../css/component/mail-detail.css" >
+
+    <HBox>
+        <Label>From: </Label>
+        <TextField fx:id="fromText" HBox.hgrow="ALWAYS" />
+    </HBox>
+
+    <HBox>
+        <Label>To: </Label>
+        <TextField fx:id="toText" HBox.hgrow="ALWAYS" />
+    </HBox>
+
+    <HBox>
+        <Label>Object: </Label>
+        <TextField fx:id="objText" HBox.hgrow="ALWAYS" />
+    </HBox>
+
+    <TextArea fx:id="contentText"  VBox.vgrow="ALWAYS" /><!--editable="false"-->
+</VBox>
