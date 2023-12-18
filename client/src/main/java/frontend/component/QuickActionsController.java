@@ -4,6 +4,7 @@ import backend.Sender;
 import frontend.MailEditorController;
 import frontend.MainController;
 import frontend.util.StageWrapper;
+import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -19,21 +20,31 @@ public class QuickActionsController {
     private final MailBox mailBox = MailBox.mBoxTmp; // TODO change
 
     @FXML private void initialize(){
-        replyBtn.disableProperty().bind(mailBox.selectionExistProperty().not());
-        replyAllBtn.disableProperty().bind(mailBox.selectionExistProperty().not());
-        forwardBtn.disableProperty().bind(mailBox.selectionExistProperty().not());
-        deleteBtn.disableProperty().bind(mailBox.selectionExistProperty().not());
+        BooleanBinding emptySelectionProperty = mailBox.selectionExistProperty().not();
+        forwardBtn.disableProperty().bind(emptySelectionProperty);
+        deleteBtn.disableProperty().bind(emptySelectionProperty);
+
+        BooleanBinding invalidSelectionProperty = mailBox.getSelectedMail().fromProperty().isEqualTo(mailBox.getOwner());
+        replyBtn.disableProperty().bind(emptySelectionProperty.or(invalidSelectionProperty));
+        replyAllBtn.disableProperty().bind(emptySelectionProperty.or(invalidSelectionProperty));
+
     }
 
     @FXML private void openMailEditor(ActionEvent event){
         Window owner = ((Node)event.getSource()).getScene().getWindow();
 
         String id = ((Button)event.getSource()).getId();
+        Mail selected = mailBox.getSelectedMail();
+        // TODO clean code
         Mail startPoint = switch (id) {
-            case "replyBtn" -> new Mail(mailBox.getOwner(), "You", "Re: ", null);
-            case "replyAllBtn" -> new Mail(mailBox.getOwner(), "All", "Re: ", null);
-            case "forwardBtn" -> new Mail(mailBox.getOwner(), null, "Fwd: ", null);
-            case "deleteBtn" -> new Mail(mailBox.getSelectedMail());
+            case "replyBtn" -> new Mail(mailBox.getOwner(), selected.getFrom(),
+                    "Re: ", "Replying to: \n | " + selected.formatted().replace("\n", "\n | "));
+            case "replyAllBtn" -> new Mail(mailBox.getOwner(),
+                    (selected.getFrom() + ", " + selected.getTo()).replace(mailBox.getOwner() + ", ", "").replace(", " + mailBox.getOwner(), ""),
+                    "Re: ", "Replying to: \n | " + selected.formatted().replace("\n", "\n | "));
+            case "forwardBtn" -> new Mail(mailBox.getOwner(), null,
+                    "Fwd: " + selected.getObject(), "Forwarding to: \n | " + selected.formatted().replace("\n", "\n | "));
+            case "deleteBtn" -> new Mail(selected);
             case null, default -> new Mail(mailBox.getOwner(), null, null, null);
         };
 
@@ -41,7 +52,7 @@ public class QuickActionsController {
     }
 
     private void openDialog(Window owner, Mail startPoint, boolean isDeletion){
-        StageWrapper stageWrapper = new StageWrapper(null, "Mail editor", 500, 400);
+        StageWrapper stageWrapper = new StageWrapper(null, "Mail editor", 650, 450);
         stageWrapper.setModal(owner);
         stageWrapper.setIcon(MainController.class.getResource("img/icon.png"));
 
