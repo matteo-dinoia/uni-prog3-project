@@ -11,12 +11,7 @@ public class StatusBarController {
     private final MailBox mailBox = MailBox.mBoxTmp; // TODO change
 
     @FXML private void initialize(){
-        mailBox.onlineProperty().addListener((changed, oldV, newV) -> setOnline(newV));
-        setOnline(mailBox.onlineProperty().get());
-    }
-
-    private void setOnline(boolean online) {
-        if (online) statusLabel.setText("Online");
-        else statusLabel.setText("Cannot connect server (possibly no internet)");
+        statusLabel.managedProperty().bind(mailBox.onlineProperty().not());
+        statusLabel.visibleProperty().bind(mailBox.onlineProperty().not());
     }
 }
