@@ -15,17 +15,18 @@ import model.MailBox;
 
 public class QuickActionsController {
     // FXML
-    @FXML private HBox btnPanel;
-    @FXML private Button deleteBtn;
+    @FXML private Button replyBtn, replyAllBtn, forwardBtn, deleteBtn;
     // Field
     private final MailBox mailBox = MailBox.mBoxTmp; // TODO change
 
     @FXML private void initialize(){
-        btnPanel.disableProperty().bind(mailBox.onlineProperty().not());
+        replyBtn.disableProperty().bind(mailBox.selectionExistProperty().not());
+        replyAllBtn.disableProperty().bind(mailBox.selectionExistProperty().not());
+        forwardBtn.disableProperty().bind(mailBox.selectionExistProperty().not());
         deleteBtn.disableProperty().bind(mailBox.selectionExistProperty().not());
     }
 
-    @FXML private void newMail(ActionEvent event){
+    @FXML private void openMailEditor(ActionEvent event){
         Window owner = ((Node)event.getSource()).getScene().getWindow();
 
         String id = ((Button)event.getSource()).getId();
@@ -33,13 +34,14 @@ public class QuickActionsController {
             case "replyBtn" -> new Mail(mailBox.getOwner(), "You", "Re: ", null);
             case "replyAllBtn" -> new Mail(mailBox.getOwner(), "All", "Re: ", null);
             case "forwardBtn" -> new Mail(mailBox.getOwner(), null, "Fwd: ", null);
+            case "deleteBtn" -> new Mail(mailBox.getSelectedMail());
             default -> new Mail(mailBox.getOwner(), null, null, null);
         };
 
-        openDialog(owner, startPoint);
+        openDialog(owner, startPoint, deleteBtn.getId().equals(id));
     }
 
-    private void openDialog(Window owner, Mail startPoint){
+    private void openDialog(Window owner, Mail startPoint, boolean isDeletion){
         StageWrapper stageWrapper = new StageWrapper(null, "Mail editor", 500, 400);
         stageWrapper.setModal(owner);
         stageWrapper.setIcon(MainController.class.getResource("img/icon.png"));
@@ -47,16 +49,22 @@ public class QuickActionsController {
         MailEditorController contrEditor = stageWrapper.setRootAndGetController(MainController.class.getResource("mail-editor-view.fxml"));
         if (contrEditor != null){
             contrEditor.initializeModel(mailBox);
-            contrEditor.setOptionListener((Mail mail) -> { mailBox.add(mail); stageWrapper.close(); new Thread(new Sender(mail)).start(); });
-            contrEditor.setDefaultMail(startPoint);
+            contrEditor.setMail(startPoint, isDeletion);
+            contrEditor.setOptionListener((Mail mail) -> {
+                if(isDeletion){
+                    // TODO add remover
+                    //mailBox.remove(mail); TODO fix doesn't work
+                }else{
+                    mailBox.add(mail); // TODO Remove
+                    new Thread(new Sender(mail)).start();
+                }
+
+                stageWrapper.close();
+            });
         }else{
             System.err.println("Coundn't load EditorController");
         }
 
         stageWrapper.open();
-    }
-
-    @FXML private void deleteMail() {
-        //TODO
     }
 }

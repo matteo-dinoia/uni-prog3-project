@@ -44,8 +44,7 @@ public class MailBox {
     }
 
     public void add(Mail mail) {
-        if(mail == null)
-            return;
+        if(mail == null) return;
 
         if(owner.equals(mail.getFrom())) {
             if(!listSent.contains(mail))
@@ -54,7 +53,6 @@ public class MailBox {
             if(!listReceived.contains(mail))
                 listReceived.add(mail);
         }
-
     }
 
     public void add(List<SimpleMail> list) {
@@ -63,6 +61,15 @@ public class MailBox {
 
         for(SimpleMail toAdd : list)
             this.add(new Mail(toAdd));
+    }
+
+    public void remove(Mail mail){
+        if(mail == null) return;
+
+        if(owner.equals(mail.getFrom()))
+            listSent.remove(mail);
+        else
+            listReceived.remove(mail);
     }
 
     public void setOnline(boolean value) { online.setValue(value); }

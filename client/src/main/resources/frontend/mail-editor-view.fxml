@@ -7,10 +7,14 @@
 <BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
             stylesheets="@css/general.css" fx:controller="frontend.MailEditorController">
 
-   <padding><Insets left="20.0" right="20.0" top="20.0" /></padding>
-
-   <center>
+   <!-- TODO to style and clear code -->
+   <left>
       <VBox>
+         <Label fx:id="titleText" text="New mail" style="-fx-font-weight: bolder" />
+         <Label text="From:" />
+         <TextField fx:id="fromText" editable="false">
+            <VBox.margin><Insets bottom="10.0" /></VBox.margin>
+         </TextField>
          <Label text="To:" />
          <TextField fx:id="toText">
             <VBox.margin><Insets bottom="10.0" /></VBox.margin>
@@ -19,9 +23,22 @@
          <TextField fx:id="objText">
             <VBox.margin><Insets bottom="10.0" /></VBox.margin>
          </TextField>
-         <Label text="Body:"/>
-         <TextArea fx:id="contentText" VBox.vgrow="ALWAYS" />
       </VBox>
+   </left>
+
+   <center>
+      <BorderPane>
+         <top>
+            <fx:include source="component/status-bar.fxml"/>
+         </top>
+         <center>
+            <VBox>
+               <Label text="Body:"/>
+               <TextArea fx:id="contentText" wrapText="true" VBox.vgrow="ALWAYS" />
+            </VBox>
+
+         </center>
+      </BorderPane>
    </center>
 
    <bottom>

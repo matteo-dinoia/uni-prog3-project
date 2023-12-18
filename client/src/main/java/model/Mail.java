@@ -25,6 +25,15 @@ public class Mail implements Serializable {
                 toAdd.object(), toAdd.content());
     }
 
+    public Mail(Mail mail) {
+        if(mail == null) return;
+
+        this.source.set(mail.source.get());
+        this.destinations.set(mail.destinations.get());
+        this.object.set(mail.object.get());
+        this.content.set(mail.content.get());
+    }
+
     @Override public String toString() {
         return object.get();
     }
