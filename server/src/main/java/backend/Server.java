@@ -26,6 +26,7 @@ public class Server implements Runnable, Logger{
             server.setSoTimeout(2000);
             Socket socket;
 
+            logger.log("INFO: Server initialized");
             while(!Thread.currentThread().isInterrupted()){
                 try{
                     socket = server.accept();
