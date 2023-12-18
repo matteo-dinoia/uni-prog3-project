@@ -24,10 +24,10 @@ public class MailEditorController implements EndStatusNotifier<Mail> {
     public void setMail(Mail mail, boolean isDeletion){
         this.mailCreated = mail;
 
-        fromText.textProperty().bind(mailCreated.getFromProperty());
-        toText.textProperty().bindBidirectional(mailCreated.getToProperty());
-        objText.textProperty().bindBidirectional(mailCreated.getObjectProperty());
-        contentText.textProperty().bindBidirectional(mailCreated.getContentProperty());
+        fromText.textProperty().bind(mailCreated.fromProperty());
+        toText.textProperty().bindBidirectional(mailCreated.toProperty());
+        objText.textProperty().bindBidirectional(mailCreated.objectProperty());
+        contentText.textProperty().bindBidirectional(mailCreated.contentProperty());
 
         if(isDeletion){
             titleText.setText("Deleting mail");

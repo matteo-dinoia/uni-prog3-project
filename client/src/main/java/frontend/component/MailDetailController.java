@@ -13,9 +13,9 @@ public class MailDetailController {
     private final MailBox mailBox = MailBox.mBoxTmp; // TODO change
 
     @FXML private void initialize() {
-        fromText.textProperty().bind(mailBox.getSelectedMail().getFromProperty());
-        toText.textProperty().bind(mailBox.getSelectedMail().getToProperty());
-        objText.textProperty().bind(mailBox.getSelectedMail().getObjectProperty());
-        contentText.textProperty().bind(mailBox.getSelectedMail().getContentProperty());
+        fromText.textProperty().bind(mailBox.getSelectedMail().fromProperty());
+        toText.textProperty().bind(mailBox.getSelectedMail().toProperty());
+        objText.textProperty().bind(mailBox.getSelectedMail().objectProperty());
+        contentText.textProperty().bind(mailBox.getSelectedMail().contentProperty());
     }
 }

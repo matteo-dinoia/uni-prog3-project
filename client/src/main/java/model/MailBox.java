@@ -37,10 +37,10 @@ public class MailBox {
             selectionExist.set(true);
         }
 
-        selectedMail.getFromProperty().bind(mail.getFromProperty());
-        selectedMail.getToProperty().bind(mail.getToProperty());
-        selectedMail.getObjectProperty().bind(mail.getObjectProperty());
-        selectedMail.getContentProperty().bind(mail.getContentProperty());
+        selectedMail.fromProperty().bind(mail.fromProperty());
+        selectedMail.toProperty().bind(mail.toProperty());
+        selectedMail.objectProperty().bind(mail.objectProperty());
+        selectedMail.contentProperty().bind(mail.contentProperty());
     }
 
     public void add(Mail mail) {
