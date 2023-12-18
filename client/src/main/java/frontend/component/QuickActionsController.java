@@ -52,9 +52,9 @@ public class QuickActionsController {
             contrEditor.setOptionListener((Mail mail) -> {
                 if(isDeletion){
                     // TODO add remover
-                    mailBox.remove(mail); //TODO fix doesn't work
+                    mailBox.remove(mail); //TODO remove
                 }else{
-                    mailBox.add(mail); // TODO Remove
+                    mailBox.add(mail); // TODO remove
                     new Thread(new Sender(mail)).start();
                 }
 

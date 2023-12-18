@@ -3,6 +3,7 @@ package model;
 import javafx.beans.property.SimpleStringProperty;
 import model.operationData.SimpleMail;
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Mail implements Serializable {
     private final SimpleStringProperty source = new SimpleStringProperty("");
@@ -38,6 +39,19 @@ public class Mail implements Serializable {
         return object.get();
     }
 
+    @Override public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        Mail mail = (Mail) o;
+        return this.getFrom().equals(mail.getFrom()) && this.getTo().equals(mail.getTo())
+                && this.getObject().equals(mail.getObject()) && this.getContent().equals(mail.getContent());
+    }
+
+    @Override public int hashCode() {
+        return Objects.hash(source, destinations, object, content);
+    }
+
     public String formatted(){
         return "From: " + fromProperty().get() + "\n" +
                 "To: " + toProperty().get() + "\n" +
@@ -53,4 +67,6 @@ public class Mail implements Serializable {
 
     String getFrom() { return source.get(); }
     String getTo() { return destinations.get(); }
+    String getObject() { return object.get(); }
+    String getContent() { return content.get(); }
 }

@@ -13,18 +13,18 @@
 
     <HBox>
         <Label>From: </Label>
-        <TextField fx:id="fromText" HBox.hgrow="ALWAYS" />
+        <TextField fx:id="fromText" editable="false" HBox.hgrow="ALWAYS" />
     </HBox>
 
     <HBox>
         <Label>To: </Label>
-        <TextField fx:id="toText" HBox.hgrow="ALWAYS" />
+        <TextField fx:id="toText" editable="false" HBox.hgrow="ALWAYS" />
     </HBox>
 
     <HBox>
         <Label>Object: </Label>
-        <TextField fx:id="objText" HBox.hgrow="ALWAYS" />
+        <TextField fx:id="objText" editable="false" HBox.hgrow="ALWAYS" />
     </HBox>
 
-    <TextArea fx:id="contentText"  VBox.vgrow="ALWAYS" /><!--editable="false"-->
+    <TextArea fx:id="contentText" editable="false" VBox.vgrow="ALWAYS" />
 </VBox>
