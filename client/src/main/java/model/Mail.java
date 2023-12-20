@@ -48,10 +48,6 @@ public class Mail implements Serializable {
                 && this.getObject().equals(mail.getObject()) && this.getContent().equals(mail.getContent());
     }
 
-    @Override public int hashCode() {
-        return Objects.hash(source, destinations, object, content);
-    }
-
     public String formatted(){
         return "From: " + fromProperty().get() + "\n" +
                 "To: " + toProperty().get() + "\n" +

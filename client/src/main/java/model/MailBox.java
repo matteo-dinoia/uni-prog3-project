@@ -66,6 +66,8 @@ public class MailBox {
     public void remove(Mail mail){
         if(mail == null) return;
 
+        if(mail.equals(selectedMail)) setSelectedMail(null);
+
         if(owner.equals(mail.getFrom()))
             listSent.remove(mail);
         else

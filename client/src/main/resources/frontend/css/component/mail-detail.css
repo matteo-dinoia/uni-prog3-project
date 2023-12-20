@@ -15,3 +15,7 @@ TextField {
     -fx-border-width: 0;
     -fx-padding: 2px 5px;
 }
+
+TextArea {
+    -fx-pref-width: 100000px; /* Bug of javafx (should be Infinity)*/
+}
