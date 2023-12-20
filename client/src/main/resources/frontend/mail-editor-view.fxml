@@ -5,22 +5,36 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-            stylesheets="@css/general.css" fx:controller="frontend.MailEditorController">
+            stylesheets="@css/general.css, @css/mail-editor-view.css"
+            fx:controller="frontend.MailEditorController">
 
-   <padding><Insets left="20.0" right="20.0" top="20.0" /></padding>
-
-   <center>
-      <VBox>
+   <left>
+      <VBox styleClass="info-pane">
+         <Label fx:id="titleText" text="New mail"/>
+         <Label text="From:" />
+         <TextField fx:id="fromText" editable="false">
+            <VBox.margin><Insets bottom="15" top="5" /></VBox.margin>
+         </TextField>
          <Label text="To:" />
          <TextField fx:id="toText">
-            <VBox.margin><Insets bottom="10.0" /></VBox.margin>
+            <VBox.margin><Insets bottom="15" top="5" /></VBox.margin>
          </TextField>
          <Label text="Object:"/>
          <TextField fx:id="objText">
-            <VBox.margin><Insets bottom="10.0" /></VBox.margin>
+            <VBox.margin><Insets bottom="15" top="5" /></VBox.margin>
          </TextField>
-         <Label text="Body:"/>
-         <TextArea fx:id="contentText" VBox.vgrow="ALWAYS" />
+      </VBox>
+   </left>
+
+   <center>
+      <VBox styleClass="content-pane">
+         <fx:include source="component/status-bar.fxml"/>
+         <Label text="Body:">
+            <VBox.margin><Insets top="20" left="10" right="10"/></VBox.margin>
+         </Label>
+         <TextArea fx:id="contentText" VBox.vgrow="ALWAYS">
+            <VBox.margin><Insets top="5" left="10" right="10" bottom="10"/></VBox.margin>
+         </TextArea>
       </VBox>
    </center>
 

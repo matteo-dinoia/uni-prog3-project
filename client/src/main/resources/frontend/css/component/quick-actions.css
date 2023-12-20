@@ -1,0 +1,12 @@
+#replyBtn, #replyAllBtn, #forwardBtn{
+    -fx-max-width: Infinity;
+}
+
+#deleteBtn{
+    -fx-text-fill: red;
+}
+
+HBox{
+    -fx-border-width: 1px 0 0 0;
+    -fx-border-color: #e2e2e2;
+}

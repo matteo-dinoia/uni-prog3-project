@@ -3,35 +3,30 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane stylesheets="@css/general.css"
+<SplitPane dividerPositions="0.4" stylesheets="@css/general.css, @css/main-view.css"
             xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="frontend.MainController">
 
-    <center>
-        <SplitPane dividerPositions="0.4">
-            <TabPane minWidth="200" tabClosingPolicy="UNAVAILABLE">
-                <Tab onSelectionChanged="#resetSelected" text="Received">
-                    <ListView fx:id="receivedListView" onMouseClicked="#updateSelectedReceived" />
-                </Tab>
-                <Tab onSelectionChanged="#resetSelected" text="Sent">
-                    <ListView fx:id="sentListView" onMouseClicked="#updateSelectedSent" />
-                </Tab>
-            </TabPane>
+    <TabPane tabClosingPolicy="UNAVAILABLE">
+        <Tab onSelectionChanged="#resetSelected" text="Received">
+            <ListView fx:id="receivedListView" onMouseClicked="#updateSelectedReceived" />
+        </Tab>
+        <Tab onSelectionChanged="#resetSelected" text="Sent">
+            <ListView fx:id="sentListView" onMouseClicked="#updateSelectedSent" />
+        </Tab>
+    </TabPane>
 
-            <BorderPane minWidth="400">
-                <center>
-                    <fx:include source="component/mail-detail.fxml"/>
-                </center>
+    <BorderPane>
+        <top>
+            <fx:include source="component/status-bar.fxml"/>
+        </top>
+        <center>
+            <fx:include source="component/mail-detail.fxml"/>
+        </center>
 
-                <bottom>
-                    <fx:include source="component/quick-actions.fxml"/>
-                </bottom>
-            </BorderPane>
-        </SplitPane>
-    </center>
+        <bottom>
+            <fx:include source="component/quick-actions.fxml"/>
+        </bottom>
+    </BorderPane>
+</SplitPane>
 
-    <bottom>
-        <fx:include source="component/status-bar.fxml"/>
-    </bottom>
-
-</BorderPane>

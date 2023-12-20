@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="frontend.LogController">
 

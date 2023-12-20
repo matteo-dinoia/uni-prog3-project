@@ -1,0 +1,7 @@
+.title{
+    -fx-font-weight: bold;
+}
+
+#usernameField{
+    -fx-max-width: 200px;
+}
