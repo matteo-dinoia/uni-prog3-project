@@ -15,10 +15,10 @@ public class Mail implements Serializable {
     private long timestamp;
 
     public Mail(String from, String dest, String object, String content){
-        this.source.set(from);
-        this.destinations.set(dest);
-        this.object.set(object);
-        this.content.set(content);
+        this.source.set(from == null ? "" : from);
+        this.destinations.set(dest == null ? "" : dest);
+        this.object.set(object == null ? "" : object);
+        this.content.set(content == null ? "" : content);
     }
 
     public Mail(SimpleMail toAdd) {

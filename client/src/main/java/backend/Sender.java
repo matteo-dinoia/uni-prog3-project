@@ -3,7 +3,7 @@ package backend;
 import model.Mail;
 import model.MailValidator;
 
-public class Sender implements Runnable{
+public class Sender extends ServiceRequester<String> {
     private final Mail toSend;
     private final MailValidator validator = new MailValidator();
 
@@ -11,10 +11,12 @@ public class Sender implements Runnable{
         this.toSend = toSend;
     }
 
-    public void run(){
+    // Return error string -> if null then it succeded
+    @Override public String call() {
         if(toSend == null || !validator.checkValidity(toSend))
-            System.out.println("Mail not valid");
-        else
-            System.out.println("Sending mail:\n" + toSend.formatted() + "\n\n");
+            return "Mail not valid";
+
+        System.out.println("Sending mail:\n" + toSend.formatted() + "\n\n");
+        return null;
     }
 }

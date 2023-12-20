@@ -1,6 +1,8 @@
 package frontend.component;
 
+import backend.Deleter;
 import backend.Sender;
+import backend.ServiceRequester;
 import frontend.MailEditorController;
 import frontend.MainController;
 import frontend.util.StageWrapper;
@@ -60,21 +62,34 @@ public class QuickActionsController {
         if (contrEditor != null){
             contrEditor.initializeModel(mailBox);
             contrEditor.setMail(startPoint, isDeletion);
-            contrEditor.setOptionListener((Mail mail) -> {
-                if(isDeletion){
-                    // TODO add remover
-                    mailBox.remove(mail); //TODO remove
-                }else{
-                    mailBox.add(mail); // TODO remove
-                    new Thread(new Sender(mail)).start();
-                }
-
-                stageWrapper.close();
-            });
+            contrEditor.setOptionListener(mail -> handleMailFromEditor(mail, isDeletion, stageWrapper, contrEditor));
         }else{
             System.err.println("Coundn't load EditorController");
         }
 
         stageWrapper.open();
+    }
+
+    private void handleMailFromEditor(Mail mail, boolean isDeletion, StageWrapper stage, MailEditorController controller){
+        if(mail == null){
+            stage.close();
+            return;
+        }
+
+        ServiceRequester<String> service;
+        if(isDeletion) service = new Deleter(mail);
+        else service = new Sender(mail);
+
+        service.setOptionListener(errorStr ->{
+            if (errorStr != null) {
+                controller.setError(errorStr);
+                return;
+            }
+
+            if(isDeletion) mailBox.remove(mail); //TODO remove
+            else mailBox.add(mail); // TODO remove
+            stage.close();
+        });
+        new Thread(service).start();
     }
 }

@@ -13,7 +13,7 @@ import model.MailBox;
 
 public class MailEditorController implements EndStatusNotifier<Mail> {
     // FXML
-    @FXML private Label titleText;
+    @FXML private Label titleText, msgText;
     @FXML private TextField fromText, toText, objText;
     @FXML private TextArea contentText;
     @FXML private Button sendBtn;
@@ -38,6 +38,10 @@ public class MailEditorController implements EndStatusNotifier<Mail> {
             objText.setEditable(false);
             contentText.setEditable(false);
         }
+    }
+
+    public void setError(String errorStr){
+        msgText.setText(errorStr);
     }
 
     private Mail getMail(){
