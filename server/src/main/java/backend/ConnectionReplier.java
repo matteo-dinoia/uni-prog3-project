@@ -3,11 +3,9 @@ package backend;
 import com.google.gson.Gson;
 import interfaces.Logger;
 import model.operationData.Operation;
-import model.operationData.SimpleMail;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class ConnectionReplier implements Runnable {
@@ -26,7 +24,10 @@ public class ConnectionReplier implements Runnable {
         logger.log("INITIALIZED CONNECTION");
         try (Scanner scanner = new Scanner(socket.getInputStream())) {
             try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)) {
-                replyInternal(scanner, writer);
+                String s = scanner.nextLine();
+                Operation op = gson.fromJson(s, Operation.class);
+                Operation response = replyInternal(op);
+                writer.println(gson.toJson(response));
             }
         } catch (IOException exc) {
             logger.log("ERROR: during communication with client");
@@ -70,27 +71,64 @@ public class ConnectionReplier implements Runnable {
         }*/
     }
 
-    private void replyInternal(Scanner scanner, PrintWriter writer) throws IOException {
-        String s = scanner.nextLine();
-        Operation op = gson.fromJson(s, Operation.class);
+    private Operation replyInternal(Operation op) throws IOException {
+        Operation response = null;
 
         if (op.operation() == Operation.OPERATION_GETALL)
-            getAll(writer);
-        else if (op.operation() > 0)
-            getNew(writer);
+            response = getAll();
+        else if (op.operation() == 1)
+            response = getNew();
+        else if (op.operation() == Operation.OPERATION_SEND)
+            response = receiveMail(op);
         else
             logger.log("ERROR: invalid operation");
+
+        return response;
     }
 
-    private void getAll(PrintWriter writer){
-        String res = gson.toJson(testOperation());
-        logger.log("RESPONDING (num char: " + res.length() + ")");
-        writer.println(res);
+    private Operation getAll() {
+        logger.log("RESPONDING WITH ALL MAILS");
+        return testOperation();
     }
 
-    private void getNew(PrintWriter writer){
-        String res = gson.toJson(new Operation("test", 0, new ArrayList<>()));
+    private Operation getNew() {
         logger.log("RESPONDING NOTHING.");
-        writer.println(res);
+        return new Operation("test", 0, new ArrayList<>());
+    }
+
+
+    private Operation receiveMail(Operation incomingOp) {
+        File file = new File("mail/file.json");
+        Operation fileOperation;
+
+        if (file.exists() && file.length() > 0) {
+            try (Reader reader = new InputStreamReader(new FileInputStream(file))) {
+                fileOperation = gson.fromJson(reader, Operation.class);
+                if (fileOperation == null) {
+                    fileOperation = new Operation("test", 6, new ArrayList<>());
+                }
+            } catch (IOException e) {
+                logger.log("ERROR: couldn't read from file");
+                return null;
+            }
+        } else {
+            fileOperation = new Operation("test", 6, new ArrayList<>());
+        }
+
+        fileOperation.mailList().addAll(incomingOp.mailList());
+
+        try (Writer w = new OutputStreamWriter(new FileOutputStream(file))) {
+            gson.toJson(fileOperation, w);
+        } catch (IOException e) {
+            logger.log("ERROR: couldn't write to file");
+            return null;
+        }
+
+        return new Operation("test", 0, new ArrayList<>());
+    }
+
+
+    private void deleteMail(Operation op) {
+
     }
 }

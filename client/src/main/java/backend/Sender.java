@@ -2,6 +2,10 @@ package backend;
 
 import model.Mail;
 import model.MailValidator;
+import model.operationData.Operation;
+import model.operationData.SimpleMail;
+import java.util.Collections;
+import java.util.List;
 
 public class Sender extends ServiceRequester<String> {
     private final Mail toSend;
@@ -16,7 +20,12 @@ public class Sender extends ServiceRequester<String> {
         if(toSend == null || !validator.checkValidity(toSend))
             return "Mail not valid";
 
-        System.out.println("Sending mail:\n" + toSend.formatted() + "\n\n");
+        List<SimpleMail> mailsToSend = Collections.singletonList(toSend.getSimpleMail());
+        Operation sendOperation = new Operation(toSend.getFrom(), Operation.OPERATION_SEND, mailsToSend);
+        Operation response = executeOperation(sendOperation);
+
+        if (response == null)
+            return "Error during communication with server";
         return null;
     }
 }

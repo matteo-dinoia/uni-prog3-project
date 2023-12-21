@@ -35,6 +35,10 @@ public class Mail implements Serializable {
         this.content.set(mail.content.get());
     }
 
+    public SimpleMail getSimpleMail(){
+        return new SimpleMail(getFrom(), getTo(), getObject(), getContent());
+    }
+
     @Override public String toString() {
         return object.get();
     }
