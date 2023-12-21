@@ -1,7 +1,6 @@
 package model.operationData;
 
-public record SimpleMail(String source, String destinations, String object, String content) {
-    //TODO USE THEM
-    /*private int id;
-    private long timestamp;*/
+import java.util.Date;
+
+public record SimpleMail(String source, String destinations, String object, String content, int id, Date date) {
 }

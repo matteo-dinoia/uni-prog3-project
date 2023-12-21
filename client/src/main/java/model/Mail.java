@@ -3,7 +3,7 @@ package model;
 import javafx.beans.property.SimpleStringProperty;
 import model.operationData.SimpleMail;
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.Date;
 
 public class Mail implements Serializable {
     private final SimpleStringProperty source = new SimpleStringProperty("");
@@ -11,8 +11,8 @@ public class Mail implements Serializable {
     private final SimpleStringProperty object = new SimpleStringProperty("");
     private final SimpleStringProperty content = new SimpleStringProperty("");
     //TODO USE THEM
-    private int id;
-    private long timestamp;
+    private int id = -1;
+    private Date date = null;
 
     public Mail(String from, String dest, String object, String content){
         this.source.set(from == null ? "" : from);
@@ -24,6 +24,8 @@ public class Mail implements Serializable {
     public Mail(SimpleMail toAdd) {
         this(toAdd.source(), toAdd.destinations(),
                 toAdd.object(), toAdd.content());
+        this.id = toAdd.id();
+        this.date = toAdd.date();
     }
 
     public Mail(Mail mail) {
@@ -33,10 +35,12 @@ public class Mail implements Serializable {
         this.destinations.set(mail.destinations.get());
         this.object.set(mail.object.get());
         this.content.set(mail.content.get());
+        this.id = mail.id;
+        this.date = mail.date;
     }
 
     public SimpleMail getSimpleMail(){
-        return new SimpleMail(getFrom(), getTo(), getObject(), getContent());
+        return new SimpleMail(getFrom(), getTo(), getObject(), getContent(), id, date);
     }
 
     @Override public String toString() {
@@ -69,4 +73,9 @@ public class Mail implements Serializable {
     public String getTo() { return destinations.get(); }
     public String getObject() { return object.get(); }
     public String getContent() { return content.get(); }
+
+    void setId(int id){ this.id = id; }
+    int getId(){ return this.id; }
+    void setDate(Date date){ this.date = date; }
+    Date getDate(){ return date; }
 }

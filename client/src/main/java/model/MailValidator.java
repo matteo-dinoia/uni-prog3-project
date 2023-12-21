@@ -5,6 +5,9 @@ public class MailValidator {
         if(mail == null || !isAddressValid(mail.getFrom()))
             return false;
 
+        if(mail.getObject().isEmpty() || mail.getObject().isBlank())
+            return false;
+
         String[] destinations = mail.getTo().split(",");
         if(destinations.length == 0) return false;
 

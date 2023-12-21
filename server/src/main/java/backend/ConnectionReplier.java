@@ -3,9 +3,11 @@ package backend;
 import com.google.gson.Gson;
 import interfaces.Logger;
 import model.operationData.Operation;
+import model.operationData.SimpleMail;
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConnectionReplier implements Runnable {
@@ -18,10 +20,8 @@ public class ConnectionReplier implements Runnable {
         this.logger = logger;
     }
 
-
     @Override
     public void run() {
-        logger.log("INITIALIZED CONNECTION");
         try (Scanner scanner = new Scanner(socket.getInputStream())) {
             try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)) {
                 String s = scanner.nextLine();
@@ -43,92 +43,66 @@ public class ConnectionReplier implements Runnable {
         logger.log("ENDED");
     }
 
-    private Operation testOperation() {
-        writeHardcodedTestData();
-
-        try (Reader reader = new InputStreamReader(new FileInputStream("mail/file.json"))) {
-            return gson.fromJson(reader, Operation.class);
-        } catch (IOException e) {
-            logger.log("ERROR: coudn't read from file");
-        }
-
-        return new Operation("test", -1, new ArrayList<>());
-    }
-
-    private void writeHardcodedTestData() {
-        /*try(Writer writer = new OutputStreamWriter(new FileOutputStream("mail/file.json"))){
-            SimpleMail[] mails = {
-                    new SimpleMail("testuser@gmail.com", "a", "b1", "c"),
-                    new SimpleMail("testuser@gmail.com", "a", "b2", "c"),
-                    new SimpleMail("a", "a", "bb1", "c"),
-                    new SimpleMail("a", "a", "bb2", "c"),
-                    new SimpleMail("a", "a", "bb3", "c"),
-                    new SimpleMail("a", "a", "bb4", "c"),
-            };
-            writer.write(gson.toJson(new Operation("test", mails.length, List.of(mails))));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-    }
-
     private Operation replyInternal(Operation op) throws IOException {
-        Operation response = null;
-
-        if (op.operation() == Operation.OPERATION_GETALL)
-            response = getAll();
-        else if (op.operation() == 1)
-            response = getNew();
-        else if (op.operation() == Operation.OPERATION_SEND)
-            response = receiveMail(op);
-        else
-            logger.log("ERROR: invalid operation");
-
-        return response;
+        return switch (op.operation()){
+            case Operation.OP_GETALL -> getAll(op);
+            case Operation.OP_SEND -> sendMail(op);
+            case Operation.OP_DELETE -> deleteMail(op);
+            default -> getNew(op);
+        };
     }
 
-    private Operation getAll() {
-        logger.log("RESPONDING WITH ALL MAILS");
-        return testOperation();
+    private Operation getAll(Operation op) {
+        logger.log("INITIALIZED CONNECTION -> RESPONDING WITH ALL MAILS");
+        FileManager senderFile = FileManager.get("mail/" + op.mailboxOwner() + ".json", logger);
+        List<SimpleMail> mails = senderFile.readMails();
+
+        if(mails == null)
+            return null;
+        int nop = mails.isEmpty() ? 0 : mails.getLast().id() + 1;
+        return new Operation("test", nop, Operation.NO_ERR, mails);
     }
 
-    private Operation getNew() {
-        logger.log("RESPONDING NOTHING.");
-        return new Operation("test", 0, new ArrayList<>());
+    private Operation getNew(Operation op) {
+        logger.log("INITIALIZED CONNECTION -> RESPONDING NEW MAIL");
+        FileManager senderFile = FileManager.get("mail/" + op.mailboxOwner() + ".json", logger);
+        List<SimpleMail> mails = senderFile.readMails();
+
+        if(mails == null)
+            return null;
+        int nop = mails.isEmpty() ? 0 : mails.getLast().id() + 1;
+        return new Operation("test", nop, Operation.NO_ERR,
+                    mails.stream().filter((mail) -> mail.id() >= op.operation()).toList());
     }
 
 
-    private Operation receiveMail(Operation incomingOp) {
-        File file = new File("mail/file.json");
-        Operation fileOperation;
+    private Operation sendMail(Operation op) {
+        logger.log("INITIALIZED CONNECTION -> SAVING NEW MAIL");
 
-        if (file.exists() && file.length() > 0) {
-            try (Reader reader = new InputStreamReader(new FileInputStream(file))) {
-                fileOperation = gson.fromJson(reader, Operation.class);
-                if (fileOperation == null) {
-                    fileOperation = new Operation("test", 6, new ArrayList<>());
-                }
-            } catch (IOException e) {
-                logger.log("ERROR: couldn't read from file");
+        FileManager senderFile = FileManager.get("mail/" + op.mailboxOwner() + ".json", logger);
+        for(SimpleMail toSend : op.mailList()){
+            FileManager receiverFile = FileManager.get("mail/" + toSend.destinations() + ".json", logger);
+            boolean statusRes = senderFile.appendMails(Collections.singletonList(toSend));
+            statusRes &= receiverFile.appendMails(Collections.singletonList(toSend));
+
+            if(!statusRes){
+                senderFile.removeMails(Collections.singletonList(toSend));
+                receiverFile.removeMails(Collections.singletonList(toSend));
                 return null;
             }
-        } else {
-            fileOperation = new Operation("test", 6, new ArrayList<>());
         }
 
-        fileOperation.mailList().addAll(incomingOp.mailList());
-
-        try (Writer w = new OutputStreamWriter(new FileOutputStream(file))) {
-            gson.toJson(fileOperation, w);
-        } catch (IOException e) {
-            logger.log("ERROR: couldn't write to file");
-            return null;
-        }
-
-        return new Operation("test", 0, new ArrayList<>());
+        return new Operation("test", op.operation(), Operation.NO_ERR, op.mailList());
     }
 
 
-    private void deleteMail(Operation op) {
+    private Operation deleteMail(Operation op) {
+        logger.log("INITIALIZED CONNECTION -> REMOVE EXISTING MAIL");
+        FileManager senderFile = FileManager.get("mail/" + op.mailboxOwner() + ".json", logger);
+        boolean statusRes = senderFile.removeMails(op.mailList());
 
+        if(statusRes)
+            return new Operation("test", op.operation(), Operation.NO_ERR, op.mailList());
+        return null;
     }
 }

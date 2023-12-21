@@ -8,11 +8,13 @@ import java.util.Collections;
 import java.util.List;
 
 public class Sender extends ServiceRequester<String> {
+    private final String mailboxOwner;
     private final Mail toSend;
     private final MailValidator validator = new MailValidator();
 
-    public Sender(Mail toSend){
+    public Sender(String owner, Mail toSend){
         this.toSend = toSend;
+        this.mailboxOwner = owner;
     }
 
     // Return error string -> if null then it succeded
@@ -21,7 +23,7 @@ public class Sender extends ServiceRequester<String> {
             return "Mail not valid";
 
         List<SimpleMail> mailsToSend = Collections.singletonList(toSend.getSimpleMail());
-        Operation sendOperation = new Operation(toSend.getFrom(), Operation.OPERATION_SEND, mailsToSend);
+        Operation sendOperation = new Operation(mailboxOwner, Operation.OP_SEND, Operation.NO_ERR, mailsToSend);
         Operation response = executeOperation(sendOperation);
 
         if (response == null)

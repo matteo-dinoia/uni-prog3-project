@@ -77,8 +77,8 @@ public class QuickActionsController {
         }
 
         ServiceRequester<String> service;
-        if(isDeletion) service = new Deleter(mail);
-        else service = new Sender(mail);
+        if(isDeletion) service = new Deleter(mailBox.getOwner(), mail);
+        else service = new Sender(mailBox.getOwner(), mail);
 
         service.setOptionListener(errorStr ->{
             if (errorStr != null) {
@@ -87,7 +87,6 @@ public class QuickActionsController {
             }
 
             if(isDeletion) mailBox.remove(mail); //TODO remove
-            else mailBox.add(mail); // TODO remove
             stage.close();
         });
         new Thread(service).start();
