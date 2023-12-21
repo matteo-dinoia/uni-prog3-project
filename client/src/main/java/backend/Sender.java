@@ -23,7 +23,7 @@ public class Sender extends ServiceRequester<String> {
             return "Invalid mail (invalid addresses or empty object)";
 
         List<SimpleMail> mailsToSend = Collections.singletonList(toSend.getSimpleMail());
-        Operation sendOperation = new Operation(mailboxOwner, Operation.OP_SEND, Operation.NO_ERR, mailsToSend);
+        Operation sendOperation = new Operation(mailboxOwner, Operation.OP_SEND_SINGLEMAIL, Operation.NO_ERR, mailsToSend);
         Operation response = executeOperation(sendOperation);
 
         if (response == null)
