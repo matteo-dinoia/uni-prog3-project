@@ -5,5 +5,5 @@
 <Label xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
        fx:controller="frontend.component.StatusBarController" fx:id="statusLabel"
        stylesheets="@../css/component/connection-banner.css">
-    Could't connect to the server
+    Couldn't connect to the server
 </Label>
