@@ -19,9 +19,11 @@ public class MailEditorController implements EndStatusNotifier<Mail> {
     // Fields
     private Mail mailCreated;
     private EndStatusListener<Mail> listener;
+    private boolean isSending = false;
 
     @FXML private void initialize(){ sendBtn.disableProperty().bind(App.singleMailBox.onlineProperty().not()); }
 
+    private Mail getMail(){ return mailCreated; }
     public void setMail(Mail mail, boolean isDeletion){
         this.mailCreated = mail;
 
@@ -43,15 +45,17 @@ public class MailEditorController implements EndStatusNotifier<Mail> {
 
     public void setError(String errorStr){
         msgText.setText(errorStr);
-    }
-
-    private Mail getMail(){
-        return mailCreated;
+        isSending = false;
     }
 
     @FXML private void cancel() { notifyListener(null); }
     @FXML private void send() { notifyListener(getMail()); }
-    private void notifyListener(Mail res){ if(listener != null) listener.useEndStatus(res); }
+    private void notifyListener(Mail res){
+        if(listener == null || isSending) return;
+
+        isSending = true;
+        listener.useEndStatus(res);
+    }
 
     @Override public void setOptionListener(EndStatusListener<Mail> listener) {
         this.listener = listener;

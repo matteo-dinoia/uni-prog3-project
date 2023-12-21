@@ -30,7 +30,6 @@ public class QuickActionsController {
         BooleanBinding invalidSelectionProperty = mailBox.getSelectedMail().fromProperty().isEqualTo(mailBox.getOwner());
         replyBtn.disableProperty().bind(emptySelectionProperty.or(invalidSelectionProperty));
         replyAllBtn.disableProperty().bind(emptySelectionProperty.or(invalidSelectionProperty));
-
     }
 
     @FXML private void openMailEditor(ActionEvent event){
@@ -84,7 +83,7 @@ public class QuickActionsController {
                 return;
             }
 
-            if(isDeletion) mailBox.remove(mail); //TODO remove?
+            if(isDeletion) mailBox.remove(mail);
             stage.close();
         });
         new Thread(service).start();
