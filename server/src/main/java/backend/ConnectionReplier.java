@@ -22,7 +22,7 @@ public class ConnectionReplier implements Runnable {
     }
 
     private Operation getErrorAndLog(Operation toRespond, String errorStr){
-        logger.log("ERROR:" + errorStr);
+        logger.log("ERROR", errorStr);
         return toRespond.getErrorResponse(errorStr);
     }
 
@@ -33,17 +33,18 @@ public class ConnectionReplier implements Runnable {
                 Operation op = gson.fromJson(s, Operation.class);
                 Operation response = replyInternal(op);
                 writer.println(gson.toJson(response));
+                logger.log("INFO", "Ending connection with " + op.mailboxOwner());
             }
         } catch (IOException exc) {
-            logger.log("ERROR: during communication with client");
+            logger.log("ERROR", "During communication with client");
         } catch (Throwable throwable) {
-            System.err.println("ERROR: while manipulating data: " + throwable.getMessage());
+            logger.log("DEBUG", "While manipulating data: " + throwable.getMessage());
         } finally {
             try {
                 socket.close();
-            } catch (IOException e) { logger.log("ERROR: could not close socket"); }
+            } catch (IOException e) { logger.log("ERROR", "Could not close socket"); }
         }
-        logger.log("ENDED");
+
     }
 
     private Operation replyInternal(Operation op) {
@@ -61,7 +62,7 @@ public class ConnectionReplier implements Runnable {
     }
 
     private Operation getAll(FileManager senderMailbox, Operation op) {
-        logger.log("INITIALIZED CONNECTION -> RESPONDING WITH ALL MAILS");
+        logger.log("INFO", "Intialized connection with " + op.mailboxOwner() + " -> responding with all the mails");
         List<SimpleMail> mails = senderMailbox.readMails();
         if(mails == null) return getErrorAndLog(op, "Internal Server Error getting all");
 
@@ -70,7 +71,7 @@ public class ConnectionReplier implements Runnable {
     }
 
     private Operation getNew(FileManager senderMailbox, Operation op) {
-        logger.log("INITIALIZED CONNECTION -> RESPONDING NEW MAIL");
+        logger.log("INFO", "Intialized connection with " + op.mailboxOwner() + " -> responding with new mail/s");
         List<SimpleMail> mails = senderMailbox.readMails();
         if(mails == null) return getErrorAndLog(op, "Internal Server Error getting new");
 
@@ -81,7 +82,7 @@ public class ConnectionReplier implements Runnable {
 
 
     private Operation sendMail(FileManager senderMailbox, Operation op) {
-        logger.log("INITIALIZED CONNECTION -> SAVING NEW MAIL");
+        logger.log("INFO", "Intialized connection with " + op.mailboxOwner() + "-> saving single mail sent");
 
         if(op.mailList() == null || op.mailList().size() != 1)
             return getErrorAndLog(op, "Wrong number of mail to send (!= 1)");
@@ -112,7 +113,7 @@ public class ConnectionReplier implements Runnable {
 
 
     private Operation deleteMail(FileManager senderMailbox, Operation op) {
-        logger.log("INITIALIZED CONNECTION -> REMOVE EXISTING MAIL");
+        logger.log("INFO", "Intialized connection with " + op.mailboxOwner() + "-> remove existing mail/s");
         boolean statusRes = senderMailbox.removeMails(op.mailList());
 
         if(!statusRes)

@@ -18,9 +18,13 @@ public class LogController implements Logger {
 
     @FXML private void cleanOutput() { logs.clear(); }
 
-    @Override public synchronized void log(String str){
-        if(str == null)
-            str = "WARNING: logging null value";
-        logs.add(str);
+    @Override public synchronized void log(String type, String str){
+        String res;
+
+        if(str == null || type == null)
+            res = "[WARNING]: logging null value";
+        else
+            res = "[" + type + "]: " + str;
+        logs.add(res);
     }
 }

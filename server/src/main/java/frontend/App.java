@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.net.URL;
 
 public class App extends Application {
-    private static final int WIDTH = 500;
-    private static final int HEIGHT = 400;
+    private static final int WIDTH = 600;
+    private static final int HEIGHT = 500;
     private Stage stage;
 
     @Override
