@@ -10,11 +10,9 @@ public class MainController {
     @FXML private ListView<Mail> receivedListView;
     @FXML private ListView<Mail> sentListView;
     //Field
-    private MailBox mailBox;
+    private final MailBox mailBox = App.singleMailBox;
 
-    public void initializeModel(MailBox mailBox){
-        this.mailBox = mailBox;
-
+    @FXML private void initialize(){
         receivedListView.setItems(mailBox.observableListReceived());
         sentListView.setItems(mailBox.observableListSent());
     }

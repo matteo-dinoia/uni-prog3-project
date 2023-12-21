@@ -10,7 +10,6 @@
             fx:controller="frontend.LogController">
 
     <center>
-        <!-- TODO fix 2 problem (not follow and white on clear) -->
         <ListView fx:id="logList" />
     </center>
 

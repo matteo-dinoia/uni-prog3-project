@@ -8,8 +8,11 @@ import model.MailBox;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.Executors;
+import javax.swing.JOptionPane;
 
 public class App extends Application{
+    // Static
+    public static MailBox singleMailBox;
     // Constants
     private final static String TITLE = "Mail Client";
     private final static int WIDTH = 800;
@@ -27,10 +30,6 @@ public class App extends Application{
         stageWrapper.open();
     }
 
-    public void startUpdater(MailBox mailBox){
-        scheduler.scheduleAtFixedRate(new Updater(mailBox), 0, TIME_TO_UPDATE, TimeUnit.SECONDS);
-    }
-
     private void loadPages(){
         LoginController contrLogin = stageWrapper.setRootAndGetController(getClass().getResource("login-view.fxml"));
 
@@ -39,15 +38,22 @@ public class App extends Application{
     }
 
     private void loadMainPage(String login){
-        MailBox mailBox = new MailBox(login);
-        MailBox.mBoxTmp = mailBox;
+        App.singleMailBox = new MailBox(login);
 
-        MainController contrEditor = stageWrapper.setRootAndGetController(getClass().getResource("main-view.fxml"));
-        if(contrEditor != null)
-            contrEditor.initializeModel(mailBox);
-
+        stageWrapper.setRootAndGetController(getClass().getResource("main-view.fxml"));
         stageWrapper.setTitle(TITLE + " - " + login);
-        startUpdater(mailBox);
+
+        Updater updater = new Updater();
+        updater.setOptionListener(this::notifyNewMail);
+        scheduler.scheduleAtFixedRate(updater, 0, TIME_TO_UPDATE, TimeUnit.SECONDS);
+    }
+
+    private void notifyNewMail(Integer changed) {
+        if(changed == null || changed <= 0)
+            return;
+
+        // TODO FIXO
+        // JOptionPane.showConfirmDialog(null, "New Message "+ changed);
     }
 
     private void setParameters(){

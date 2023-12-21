@@ -23,26 +23,29 @@ public class MailValidator {
             return false;
         address = address.trim();
 
-        final int START = 0;
-        final int AFTER_AT = 1;
-        final int ACCEPTED = 2;
+        String[] splitAt = address.split("@");
+        if(splitAt.length != 2) return false;
 
-        int state = START;
+        String[] splitDot = splitAt[1].split("\\.");
+        if(splitDot.length < 2) return false;
 
-        for(char c : address.toLowerCase().toCharArray()){
-            if(c == '@'){
-                if(state > START)
-                    return false;
-                state = AFTER_AT;
-            }else if(c == '.'){
-                if(state == AFTER_AT)
-                    state = ACCEPTED;
-            } else if(!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z'))){
-                return false;
-            }
-        }
+        boolean res = isOnlyLetterOrNumber(splitAt[0]);
+        for(String s : splitDot)
+            res &= isOnlyLetterOrNumber(s);
 
-        return state == ACCEPTED;
+        return res;
     }
 
+    private boolean isOnlyLetterOrNumber(String str){
+        if(str == null || str.isEmpty()) return false;
+
+        str = str.toLowerCase();
+        for(char c : str.toCharArray()){
+            if(!isOnlyLetterOrNumber(c)) return false;
+        }
+
+        return true;
+    }
+
+    private boolean isOnlyLetterOrNumber(char c){ return (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'); }
 }

@@ -3,6 +3,7 @@ package frontend.component;
 import backend.Deleter;
 import backend.Sender;
 import backend.ServiceRequester;
+import frontend.App;
 import frontend.MailEditorController;
 import frontend.MainController;
 import frontend.util.StageWrapper;
@@ -19,7 +20,7 @@ public class QuickActionsController {
     // FXML
     @FXML private Button replyBtn, replyAllBtn, forwardBtn, deleteBtn;
     // Field
-    private final MailBox mailBox = MailBox.mBoxTmp; // TODO change
+    private final MailBox mailBox =  App.singleMailBox;
 
     @FXML private void initialize(){
         BooleanBinding emptySelectionProperty = mailBox.selectionExistProperty().not();
@@ -29,7 +30,6 @@ public class QuickActionsController {
         BooleanBinding invalidSelectionProperty = mailBox.getSelectedMail().fromProperty().isEqualTo(mailBox.getOwner());
         replyBtn.disableProperty().bind(emptySelectionProperty.or(invalidSelectionProperty));
         replyAllBtn.disableProperty().bind(emptySelectionProperty.or(invalidSelectionProperty));
-
     }
 
     @FXML private void openMailEditor(ActionEvent event){
@@ -37,15 +37,13 @@ public class QuickActionsController {
 
         String id = ((Button)event.getSource()).getId();
         Mail selected = mailBox.getSelectedMail();
-        // TODO clean code
+
         Mail startPoint = switch (id) {
-            case "replyBtn" -> new Mail(mailBox.getOwner(), selected.getFrom(),
-                    "Re: ", "Replying to: \n | " + selected.formatted().replace("\n", "\n | "));
-            case "replyAllBtn" -> new Mail(mailBox.getOwner(),
+            case "replyBtn" -> new Mail(mailBox.getOwner(), selected.getFrom(), "Re: ", "Replying to:\n" + selected.formattedReference());
+            case "replyAllBtn" -> new Mail(mailBox.getOwner(), // TODO can be better
                     (selected.getFrom() + ", " + selected.getTo()).replace(mailBox.getOwner() + ", ", "").replace(", " + mailBox.getOwner(), ""),
-                    "Re: ", "Replying to: \n | " + selected.formatted().replace("\n", "\n | "));
-            case "forwardBtn" -> new Mail(mailBox.getOwner(), null,
-                    "Fwd: " + selected.getObject(), "Forwarding to: \n | " + selected.formatted().replace("\n", "\n | "));
+                    "Re: ", "Replying to:\n" + selected.formattedReference());
+            case "forwardBtn" -> new Mail(mailBox.getOwner(), null, "Fwd: " + selected.getObject(), "Forwarding to:\n" + selected.formattedReference());
             case "deleteBtn" -> new Mail(selected);
             case null, default -> new Mail(mailBox.getOwner(), null, null, null);
         };
@@ -60,7 +58,6 @@ public class QuickActionsController {
 
         MailEditorController contrEditor = stageWrapper.setRootAndGetController(MainController.class.getResource("mail-editor-view.fxml"));
         if (contrEditor != null){
-            contrEditor.initializeModel(mailBox);
             contrEditor.setMail(startPoint, isDeletion);
             contrEditor.setOptionListener(mail -> handleMailFromEditor(mail, isDeletion, stageWrapper, contrEditor));
         }else{
@@ -86,7 +83,7 @@ public class QuickActionsController {
                 return;
             }
 
-            if(isDeletion) mailBox.remove(mail); //TODO remove
+            if(isDeletion) mailBox.remove(mail);
             stage.close();
         });
         new Thread(service).start();
