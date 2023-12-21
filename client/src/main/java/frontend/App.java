@@ -8,6 +8,7 @@ import model.MailBox;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.Executors;
+import javax.swing.JOptionPane;
 
 public class App extends Application{
     // Static
@@ -42,7 +43,17 @@ public class App extends Application{
         stageWrapper.setRootAndGetController(getClass().getResource("main-view.fxml"));
         stageWrapper.setTitle(TITLE + " - " + login);
 
-        scheduler.scheduleAtFixedRate(new Updater(), 0, TIME_TO_UPDATE, TimeUnit.SECONDS);
+        Updater updater = new Updater();
+        updater.setOptionListener(this::notifyNewMail);
+        scheduler.scheduleAtFixedRate(updater, 0, TIME_TO_UPDATE, TimeUnit.SECONDS);
+    }
+
+    private void notifyNewMail(Integer changed) {
+        if(changed == null || changed <= 0)
+            return;
+
+        // TODO FIXO
+        // JOptionPane.showConfirmDialog(null, "New Message "+ changed);
     }
 
     private void setParameters(){
