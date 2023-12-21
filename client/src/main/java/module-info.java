@@ -2,6 +2,7 @@ module Client {
     requires javafx.controls;
     requires javafx.fxml;
     requires com.google.gson;
+    requires java.desktop;
 
 
     opens frontend to javafx.fxml;
