@@ -52,7 +52,7 @@ public class QuickActionsController {
     }
 
     private void openDialog(Window owner, Mail startPoint, boolean isDeletion){
-        StageWrapper stageWrapper = new StageWrapper(null, "Mail editor", 650, 450);
+        StageWrapper stageWrapper = new StageWrapper(null, "Mail editor - " + mailBox.getOwner(), 650, 450);
         stageWrapper.setModal(owner);
         stageWrapper.setIcon(MainController.class.getResource("img/icon.png"));
 

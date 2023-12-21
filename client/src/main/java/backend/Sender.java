@@ -17,7 +17,7 @@ public class Sender extends ServiceRequester<String> {
         this.mailboxOwner = owner;
     }
 
-    // Return error string -> if null then it succeded
+    /** Return error string -> if null then it succeded */
     @Override public String call() {
         if(toSend == null || !validator.checkValidity(toSend))
             return "Invalid mail (invalid addresses or empty object)";
