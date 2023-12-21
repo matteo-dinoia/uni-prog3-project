@@ -28,7 +28,7 @@
 
    <center>
       <VBox styleClass="content-pane">
-         <fx:include source="component/status-bar.fxml"/>
+         <fx:include source="component/connection-banner.fxml"/>
          <Label text="Body:">
             <VBox.margin><Insets top="20" left="10" right="10"/></VBox.margin>
          </Label>

@@ -32,7 +32,7 @@ public class ConnectionReplier implements Runnable {
         } catch (IOException exc) {
             logger.log("ERROR: during communication with client");
         } catch (Throwable throwable) {
-            System.err.println("ERROR: while manipulating data: " + throwable.getMessage()); //TODO Remove
+            System.err.println("ERROR: while manipulating data: " + throwable.getMessage());
         } finally {
             try {
                 socket.close();

@@ -40,7 +40,7 @@ public abstract class ServiceRequester<T> implements Runnable, EndStatusNotifier
         } catch (IOException e) {
             // Do nothing because there it is a internet problem
         }catch (Throwable throwable){
-            System.err.println("ERROR: while manipulating data: " + throwable.getMessage()); //TODO Remove
+            System.err.println("ERROR: while manipulating data: " + throwable.getMessage());
         }
 
         return null;

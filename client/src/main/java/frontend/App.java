@@ -10,6 +10,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.Executors;
 
 public class App extends Application{
+    // Static
+    public static MailBox singleMailBox;
     // Constants
     private final static String TITLE = "Mail Client";
     private final static int WIDTH = 800;
@@ -27,10 +29,6 @@ public class App extends Application{
         stageWrapper.open();
     }
 
-    public void startUpdater(MailBox mailBox){
-        scheduler.scheduleAtFixedRate(new Updater(mailBox), 0, TIME_TO_UPDATE, TimeUnit.SECONDS);
-    }
-
     private void loadPages(){
         LoginController contrLogin = stageWrapper.setRootAndGetController(getClass().getResource("login-view.fxml"));
 
@@ -39,15 +37,12 @@ public class App extends Application{
     }
 
     private void loadMainPage(String login){
-        MailBox mailBox = new MailBox(login);
-        MailBox.mBoxTmp = mailBox;
+        App.singleMailBox = new MailBox(login);
 
-        MainController contrEditor = stageWrapper.setRootAndGetController(getClass().getResource("main-view.fxml"));
-        if(contrEditor != null)
-            contrEditor.initializeModel(mailBox);
-
+        stageWrapper.setRootAndGetController(getClass().getResource("main-view.fxml"));
         stageWrapper.setTitle(TITLE + " - " + login);
-        startUpdater(mailBox);
+
+        scheduler.scheduleAtFixedRate(new Updater(), 0, TIME_TO_UPDATE, TimeUnit.SECONDS);
     }
 
     private void setParameters(){

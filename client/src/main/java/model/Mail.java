@@ -10,7 +10,6 @@ public class Mail implements Serializable {
     private final SimpleStringProperty destinations = new SimpleStringProperty("");
     private final SimpleStringProperty object = new SimpleStringProperty("");
     private final SimpleStringProperty content = new SimpleStringProperty("");
-    //TODO USE THEM
     private int id = -1;
     private Date date = null;
 
@@ -56,6 +55,9 @@ public class Mail implements Serializable {
                 && this.getObject().equals(mail.getObject()) && this.getContent().equals(mail.getContent());
     }
 
+    public String formattedReference(){
+        return " | " + formatted().replace("\n", "\n | ");
+    }
     public String formatted(){
         return "From: " + fromProperty().get() + "\n" +
                 "To: " + toProperty().get() + "\n" +

@@ -1,20 +1,15 @@
 package backend;
 
+import frontend.App;
 import javafx.application.Platform;
 import model.MailBox;
 import model.operationData.Operation;
 
 import java.util.ArrayList;
 
-// TODO need to be scheduled
 public class Updater extends ServiceRequester<Boolean>{
-    private final MailBox mailBox;
+    private final MailBox mailBox = App.singleMailBox;
     private int lastUpdate = Operation.OP_GETALL;
-
-
-    public Updater(MailBox mailBox){
-        this.mailBox = mailBox;
-    }
 
     @Override  public Boolean call() {
         boolean online = updateData();

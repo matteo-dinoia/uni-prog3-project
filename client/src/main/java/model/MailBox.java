@@ -7,9 +7,8 @@ import model.operationData.SimpleMail;
 import java.util.List;
 
 public class MailBox {
-    public static MailBox mBoxTmp = null;
     // Field
-    private final Mail selectedMail = new Mail("", "", "", ""); // TODO make private
+    private final Mail selectedMail = new Mail("", "", "", "");
     private final SimpleBooleanProperty selectionExist = new SimpleBooleanProperty(false);
     private final SimpleBooleanProperty online = new SimpleBooleanProperty(false);
     // --------

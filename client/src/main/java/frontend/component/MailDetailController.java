@@ -1,5 +1,6 @@
 package frontend.component;
 
+import frontend.App;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -10,7 +11,7 @@ public class MailDetailController {
     @FXML private TextField fromText, toText, objText;
     @FXML private TextArea contentText;
     // Field
-    private final MailBox mailBox = MailBox.mBoxTmp; // TODO change
+    private final MailBox mailBox = App.singleMailBox;
 
     @FXML private void initialize() {
         fromText.textProperty().bind(mailBox.getSelectedMail().fromProperty());

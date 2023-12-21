@@ -9,7 +9,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import model.Mail;
-import model.MailBox;
 
 public class MailEditorController implements EndStatusNotifier<Mail> {
     // FXML
@@ -20,6 +19,8 @@ public class MailEditorController implements EndStatusNotifier<Mail> {
     // Fields
     private Mail mailCreated;
     private EndStatusListener<Mail> listener;
+
+    @FXML private void initialize(){ sendBtn.disableProperty().bind(App.singleMailBox.onlineProperty().not()); }
 
     public void setMail(Mail mail, boolean isDeletion){
         this.mailCreated = mail;
@@ -54,9 +55,5 @@ public class MailEditorController implements EndStatusNotifier<Mail> {
 
     @Override public void setOptionListener(EndStatusListener<Mail> listener) {
         this.listener = listener;
-    }
-
-    public void initializeModel(MailBox mailBox) {
-        sendBtn.disableProperty().bind(mailBox.onlineProperty().not());
     }
 }

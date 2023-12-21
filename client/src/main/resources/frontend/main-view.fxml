@@ -18,7 +18,7 @@
 
     <BorderPane>
         <top>
-            <fx:include source="component/status-bar.fxml"/>
+            <fx:include source="component/connection-banner.fxml"/>
         </top>
         <center>
             <fx:include source="component/mail-detail.fxml"/>
