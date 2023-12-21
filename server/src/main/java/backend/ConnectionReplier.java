@@ -94,7 +94,7 @@ public class ConnectionReplier implements Runnable {
 
         String[] destNames = toSend.destinations().split(",");
         for(String dest : destNames){
-            FileManager tmp = FileManager.get(dest);
+            FileManager tmp = FileManager.get(dest.trim());
             if(tmp == null) return getErrorAndLog(op, "Not existent destination/s");
             receiversMailbox.add(tmp);
         }
