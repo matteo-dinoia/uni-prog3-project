@@ -40,8 +40,8 @@ public class MailBox {
         selectedMail.toProperty().bind(mail.toProperty());
         selectedMail.objectProperty().bind(mail.objectProperty());
         selectedMail.contentProperty().bind(mail.contentProperty());
+        selectedMail.timeProperty().bind(mail.timeProperty());
         selectedMail.setId(mail.getId());
-        selectedMail.setDate(mail.getDate());
     }
 
     public void add(Mail mail) {

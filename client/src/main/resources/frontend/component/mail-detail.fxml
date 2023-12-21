@@ -8,6 +8,7 @@
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="frontend.component.MailDetailController"
+      fx:id="detailPane"
       stylesheets="@../css/component/mail-detail.css" >
 
     <HBox>
@@ -23,6 +24,11 @@
     <HBox>
         <Label>Object: </Label>
         <TextField fx:id="objText" editable="false" HBox.hgrow="ALWAYS" />
+    </HBox>
+
+    <HBox>
+        <Label>Time: </Label>
+        <TextField fx:id="timeText" editable="false" HBox.hgrow="ALWAYS" />
     </HBox>
 
     <HBox styleClass="hbox-textarea" VBox.vgrow="ALWAYS">

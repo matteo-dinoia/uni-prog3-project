@@ -16,7 +16,7 @@ public class Deleter extends ServiceRequester<String>{
         this.mailboxOwner = owner;
     }
 
-    // Return error string -> if null then it succeded
+    /** Return error string -> if null then it succeded */
     @Override public String call() {
         List<SimpleMail> mailsToSend = Collections.singletonList(toDelete.getSimpleMail());
         Operation sendOperation = new Operation(mailboxOwner, Operation.OP_DELETE, Operation.NO_ERR, mailsToSend);

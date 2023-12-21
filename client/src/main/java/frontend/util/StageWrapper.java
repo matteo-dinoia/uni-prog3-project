@@ -2,8 +2,10 @@ package frontend.util;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -75,4 +77,18 @@ public class StageWrapper {
     public void setOnClose(EventHandler<WindowEvent> handler) {
         stage.setOnCloseRequest(handler);
     }
+
+    public Window getOwner() { return stage.getOwner(); }
+
+    public static StageWrapper getMessageDialog(Window owner, String title, String message, int minWidth, int minHeight){
+        StageWrapper wrapper = new StageWrapper(null, title, minWidth, minHeight);
+
+        Label content = new Label(message);
+        content.setAlignment(Pos.CENTER);
+
+        wrapper.setRoot(content);
+        wrapper.setModal(owner);
+        return wrapper;
+    }
+
 }

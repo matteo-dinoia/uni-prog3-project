@@ -26,7 +26,7 @@ public class Server implements Runnable, Logger{
             server.setSoTimeout(2000);
             Socket socket;
 
-            logger.log("INFO: Server initialized");
+            logger.log("INFO", "Server initialized");
             while(!Thread.currentThread().isInterrupted()){
                 try{
                     socket = server.accept();
@@ -38,11 +38,11 @@ public class Server implements Runnable, Logger{
                 new Thread(replier).start();
             }
         }catch (IOException exc){
-            log("FATAL: cannot open/accept server socket");
+            log("FATAL", "Cannot open/accept server socket");
         }
     }
 
-    @Override public void log(String str) {
-        Platform.runLater(() -> logger.log(str));
+    @Override public void log(String type, String str) {
+        Platform.runLater(() -> logger.log(type, str));
     }
 }

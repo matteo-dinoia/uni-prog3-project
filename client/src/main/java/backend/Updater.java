@@ -11,12 +11,17 @@ public class Updater extends ServiceRequester<Integer>{
     private final MailBox mailBox = App.singleMailBox;
     private int lastUpdate = Operation.OP_GETALL;
 
-    @Override  public Integer call() {
-        Integer changed = updateData();
-        boolean online = changed != null;
+    /** Return number of new mail received (initial download doesn' count) */
+    @Override public Integer call() {
+        int lastUpdateOld = lastUpdate;
+        Integer changedReceived = updateData();
+        boolean online = changedReceived != null;
+
+        if(lastUpdateOld == Operation.OP_GETALL)
+            changedReceived = 0;
 
         Platform.runLater(() -> mailBox.setOnline(online));
-        return changed;
+        return changedReceived;
     }
 
     private Integer updateData() {
@@ -28,6 +33,6 @@ public class Updater extends ServiceRequester<Integer>{
 
         Platform.runLater(() -> mailBox.add(result.mailList()));
         lastUpdate = result.operation();
-        return result.mailList().size();
+        return result.mailList().stream().filter((mail) -> !mail.source().equals(mailBox.getOwner())).toList().size();
     }
 }

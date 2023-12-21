@@ -8,11 +8,11 @@ public record Operation (String mailboxOwner, int operation, String error, List<
     public static final int OP_SEND_SINGLEMAIL = -1;
     public static final int OP_DELETE = -2;
 
-    public model.operationData.Operation getErrorResponse(String errorStr){
+    public Operation getErrorResponse(String errorStr){
         return new model.operationData.Operation(mailboxOwner(), operation(), errorStr, mailList());
     }
 
-    public model.operationData.Operation getValidResponse(int operationCode, List<SimpleMail> mails){
+    public Operation getValidResponse(int operationCode, List<SimpleMail> mails){
         return new model.operationData.Operation(mailboxOwner(), operationCode, NO_ERR, mails);
     }
 }
