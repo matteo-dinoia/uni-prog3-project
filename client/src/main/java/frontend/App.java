@@ -20,6 +20,8 @@ public class App extends Application{
     private final static int TIME_TO_UPDATE = 5;
     // Fields
     private StageWrapper stageWrapper;
+    private StageWrapper dialog;
+    private int numUnread = 0;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     @Override public void start(Stage st){
@@ -52,8 +54,19 @@ public class App extends Application{
         if(changed == null || changed <= 0)
             return;
 
-        // TODO FIXO
-        // JOptionPane.showConfirmDialog(null, "New Message "+ changed);
+        numUnread += changed;
+        if(dialog == null){
+            dialog = StageWrapper.getMessageDialog(stageWrapper.getOwner(),
+                    numUnread + " New Message/s - " + singleMailBox.getOwner(),
+                    "There are unread message/s",  300, 50);
+            dialog.setIcon(getClass().getResource("img/icon.png"));
+            dialog.setOnClose((event) -> numUnread = 0);
+            dialog.open();
+        }else{
+            dialog.setTitle(numUnread + " New Message/s - " + singleMailBox.getOwner());
+            dialog.open();
+        }
+
     }
 
     private void setParameters(){
