@@ -8,7 +8,7 @@ import model.MailBox;
 
 public class MailDetailController {
     // FXML
-    @FXML private TextField fromText, toText, objText;
+    @FXML private TextField fromText, toText, objText, timeText;
     @FXML private TextArea contentText;
     // Field
     private final MailBox mailBox = App.singleMailBox;
@@ -18,5 +18,6 @@ public class MailDetailController {
         toText.textProperty().bind(mailBox.getSelectedMail().toProperty());
         objText.textProperty().bind(mailBox.getSelectedMail().objectProperty());
         contentText.textProperty().bind(mailBox.getSelectedMail().contentProperty());
+        timeText.textProperty().bind(mailBox.getSelectedMail().timeProperty());
     }
 }

@@ -25,6 +25,11 @@
         <TextField fx:id="objText" editable="false" HBox.hgrow="ALWAYS" />
     </HBox>
 
+    <HBox>
+        <Label>Time: </Label>
+        <TextField fx:id="timeText" editable="false" HBox.hgrow="ALWAYS" />
+    </HBox>
+
     <HBox styleClass="hbox-textarea" VBox.vgrow="ALWAYS">
         <TextArea fx:id="contentText" editable="false"/>
     </HBox>
