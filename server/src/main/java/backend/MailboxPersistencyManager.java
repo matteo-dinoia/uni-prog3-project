@@ -1,9 +1,8 @@
 package backend;
 
+import backend.util.LoggableError;
 import com.google.gson.Gson;
-import interfaces.Logger;
 import model.operationData.SimpleMail;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class FileManager { //TODO rename to MailboxPersistencyManager
+public class MailboxPersistencyManager {
     // STATIC
     private final static HashMap<String, ReadWriteLock> existingLocks = new HashMap<>();
     //FIELD
@@ -20,12 +19,14 @@ public class FileManager { //TODO rename to MailboxPersistencyManager
     private final Gson gson = new Gson();
     private final File file;
 
-    public static FileManager get(String filename){
-        if(filename == null) return null;
+    public synchronized static MailboxPersistencyManager get(String filename){
+        if(filename == null)
+            throw new LoggableError("Mail account owner field is null");
         filename = "mail/" + filename + ".json";
 
         File file = new File(filename);
-        if(!file.exists()) return null;
+        if(!file.exists())
+            throw new LoggableError("One of required account doesn't exist");
 
         ReadWriteLock lock;
         if(existingLocks.containsKey(filename)){
@@ -35,10 +36,10 @@ public class FileManager { //TODO rename to MailboxPersistencyManager
             existingLocks.put(filename, lock);
         }
 
-        return new FileManager(new File(filename), lock);
+        return new MailboxPersistencyManager(new File(filename), lock);
     }
 
-    private FileManager(File file, ReadWriteLock lock){
+    private MailboxPersistencyManager(File file, ReadWriteLock lock){
         this.file = file;
         this.fileLock = lock;
     }
@@ -50,29 +51,26 @@ public class FileManager { //TODO rename to MailboxPersistencyManager
 
     public List<SimpleMail> readMails(){ return load(); }
 
-    public boolean appendMails(List<SimpleMail> mails){
+    public void appendMails(List<SimpleMail> mails){
         List<SimpleMail> toWrite = load();
-        if(toWrite == null) return false;
 
         int id = getNextOp(toWrite);
         for(SimpleMail mail : mails){
             toWrite.add(new SimpleMail(mail.source(), mail.destinations(), mail.object(), mail.content(),
-                    ++id, new Date()));
+                    id++, new Date()));
         }
 
-        return save(toWrite);
+        save(toWrite);
     }
 
-    public boolean removeMails(List<SimpleMail> mails){
+    public void removeMails(List<SimpleMail> mails){
         List<SimpleMail> toWrite = load();
-        if(toWrite == null) return false;
 
         boolean removed = toWrite.removeAll(mails);
-        if(!removed){
-            return false;
-        }
+        if(!removed)
+            throw new LoggableError("Mail to remove not found");
 
-        return save(toWrite);
+        save(toWrite);
     }
 
     private List<SimpleMail> load(){
@@ -82,7 +80,7 @@ public class FileManager { //TODO rename to MailboxPersistencyManager
         try (Reader reader = new InputStreamReader(new FileInputStream(file))) {
             res.addAll(List.of(gson.fromJson(reader, SimpleMail[].class)));
         } catch (IOException e) {
-            return null;
+            throw new LoggableError("Internal Server Error while reading");
         } finally {
             fileLock.readLock().unlock();
         }
@@ -90,16 +88,14 @@ public class FileManager { //TODO rename to MailboxPersistencyManager
         return res;
     }
 
-    private boolean save(List<SimpleMail> toWrite){
+    private void save(List<SimpleMail> toWrite){
         fileLock.writeLock().lock();
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(file))) {
             gson.toJson(toWrite.toArray(), writer);
         } catch (IOException e) {
-            return false;
+            throw new LoggableError("Internal Server Error while writing");
         } finally {
             fileLock.writeLock().unlock();
         }
-
-        return true;
     }
 }
