@@ -39,10 +39,12 @@ public class QuickActionsController {
         Mail selected = mailBox.getSelectedMail();
 
         Mail startPoint = switch (id) {
-            case "replyBtn" -> new Mail(mailBox.getOwner(), selected.getFrom(), "Re: ", "Replying to:\n" + selected.formattedReference());
+            case "replyBtn" -> new Mail(mailBox.getOwner(), selected.getFrom(), "Re: "  + selected.getObject(),
+                    "Replying to:\n" + selected.formattedReference());
             case "replyAllBtn" -> new Mail(mailBox.getOwner(), // TODO can be better
                     (selected.getFrom() + ", " + selected.getTo()).replace(mailBox.getOwner() + ", ", "").replace(", " + mailBox.getOwner(), ""),
-                    "Re: ", "Replying to:\n" + selected.formattedReference());
+                    "Re: " + selected.getObject(),
+                    "Replying to:\n" + selected.formattedReference());
             case "forwardBtn" -> new Mail(mailBox.getOwner(), null, "Fwd: " + selected.getObject(), "Forwarding to:\n" + selected.formattedReference());
             case "deleteBtn" -> new Mail(selected);
             case null, default -> new Mail(mailBox.getOwner(), null, null, null);

@@ -10,15 +10,17 @@ import java.util.ArrayList;
 public class Updater extends ServiceRequester<Integer>{
     private final MailBox mailBox = App.singleMailBox;
     private int lastUpdate = Operation.OP_GETALL;
+    private boolean firstTime = true;
 
     /** Return number of new mail received (initial download doesn' count) */
     @Override public Integer call() {
-        int lastUpdateOld = lastUpdate;
         Integer changedReceived = updateData();
         boolean online = changedReceived != null;
 
-        if(lastUpdateOld == Operation.OP_GETALL)
+        if(online && firstTime){
+            firstTime = false;
             changedReceived = 0;
+        }
 
         Platform.runLater(() -> mailBox.setOnline(online));
         return changedReceived;
