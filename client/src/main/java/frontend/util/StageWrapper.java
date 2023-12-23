@@ -2,6 +2,7 @@ package frontend.util;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -85,6 +86,7 @@ public class StageWrapper {
 
         Label content = new Label(message);
         content.setAlignment(Pos.CENTER);
+        content.setPadding(new Insets(20));
 
         wrapper.setRoot(content);
         wrapper.setModal(owner);

@@ -1,5 +1,6 @@
 package backend;
 
+import backend.util.LoggableError;
 import com.google.gson.Gson;
 import interfaces.Logger;
 import model.operationData.Operation;
@@ -31,8 +32,15 @@ public class ConnectionReplier implements Runnable {
             try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)) {
                 String s = scanner.nextLine();
                 Operation op = gson.fromJson(s, Operation.class);
-                Operation response = replyInternal(op);
+
+                Operation response;
+                try{
+                    response = replyInternal(op);
+                } catch (LoggableError loggableError){
+                    response = getErrorAndLog(op, loggableError.getMessage());
+                }
                 writer.println(gson.toJson(response));
+
                 logger.log("INFO", "Ending connection with " + op.mailboxOwner());
             }
         } catch (IOException exc) {
@@ -48,77 +56,62 @@ public class ConnectionReplier implements Runnable {
     }
 
     private Operation replyInternal(Operation op) {
-        FileManager senderMailbox = FileManager.get(op.mailboxOwner());
-        if(senderMailbox == null)
-            return getErrorAndLog(op, "Unauthorized access");
+        try{
+            MailboxPersistencyManager senderMailbox = MailboxPersistencyManager.get(op.mailboxOwner());
 
-
-        return switch (op.operation()){
-            case Operation.OP_GETALL -> getAll(senderMailbox, op);
-            case Operation.OP_SEND_SINGLEMAIL -> sendMail(senderMailbox, op);
-            case Operation.OP_DELETE -> deleteMail(senderMailbox, op);
-            default -> getNew(senderMailbox, op);
-        };
+            return switch (op.operation()){
+                case Operation.OP_SEND_SINGLEMAIL -> sendMail(senderMailbox, op);
+                case Operation.OP_DELETE -> deleteMail(senderMailbox, op);
+                default -> getNew(senderMailbox, op);
+            };
+        }catch (NullPointerException exc){
+            throw new LoggableError("One of the request operation field is null");
+        }
     }
 
-    private Operation getAll(FileManager senderMailbox, Operation op) {
-        logger.log("INFO", "Intialized connection with " + op.mailboxOwner() + " -> responding with all the mails");
+    private Operation getNew(MailboxPersistencyManager senderMailbox, Operation op) {
+        logger.log("INFO", "Intialized connection with " + op.mailboxOwner() + " -> responding with new mail/s with id >= " + op.operation());
         List<SimpleMail> mails = senderMailbox.readMails();
-        if(mails == null) return getErrorAndLog(op, "Internal Server Error getting all");
 
-        final int nop = FileManager.getNextOp(mails);
-        return op.getValidResponse(nop, mails);
-    }
-
-    private Operation getNew(FileManager senderMailbox, Operation op) {
-        logger.log("INFO", "Intialized connection with " + op.mailboxOwner() + " -> responding with new mail/s");
-        List<SimpleMail> mails = senderMailbox.readMails();
-        if(mails == null) return getErrorAndLog(op, "Internal Server Error getting new");
-
-        final int nop = FileManager.getNextOp(mails);
+        final int nop = MailboxPersistencyManager.getNextOp(mails);
         final List<SimpleMail> filtered = mails.stream().filter((mail) -> mail.id() >= op.operation()).toList();
         return op.getValidResponse(nop, filtered);
     }
 
 
-    private Operation sendMail(FileManager senderMailbox, Operation op) {
+    private Operation sendMail(MailboxPersistencyManager senderMailbox, Operation op) {
         logger.log("INFO", "Intialized connection with " + op.mailboxOwner() + "-> saving single mail sent");
 
         if(op.mailList() == null || op.mailList().size() != 1)
-            return getErrorAndLog(op, "Wrong number of mail to send (!= 1)");
+            throw new LoggableError("Wrong number of mail to send (!= 1)");
         SimpleMail toSend = op.mailList().getFirst();
+        if(toSend.destinations() == null || toSend.source() == null)
+            throw new LoggableError("Source or destination is null");
 
         // File management and error checking
-        List<FileManager> receiversMailbox = new ArrayList<>();
-        if(toSend.destinations() == null || toSend.source() == null)
-            return getErrorAndLog(op, "Source or destination is null");
+        List<MailboxPersistencyManager> receiversMailbox = new ArrayList<>();
 
         String[] destNames = toSend.destinations().split(",");
         for(String dest : destNames){
-            FileManager tmp = FileManager.get(dest.trim());
-            if(tmp == null) return getErrorAndLog(op, "Not existent destination/s");
+            MailboxPersistencyManager tmp = MailboxPersistencyManager.get(dest.trim());
             receiversMailbox.add(tmp);
         }
 
         // Actually send
-        boolean statusRes = senderMailbox.appendMails(Collections.singletonList(toSend));
-        for(FileManager tmp : receiversMailbox){
-            statusRes &= tmp.appendMails(Collections.singletonList(toSend));
+        senderMailbox.appendMails(Collections.singletonList(toSend));
+        for(MailboxPersistencyManager tmp : receiversMailbox){
+            tmp.appendMails(Collections.singletonList(toSend));
         }
 
-        if(!statusRes)
-            return getErrorAndLog(op,"Internal Server Error sending mail");
-        return new Operation("test", op.operation(), Operation.NO_ERR, op.mailList());
+        logger.log("INFO", "Sent mail by " + op.mailboxOwner() + ": \"" + op.mailList().getFirst().object() + "\"");
+        return op.getValidResponse(op.operation(), op.mailList());
     }
 
 
-    private Operation deleteMail(FileManager senderMailbox, Operation op) {
-        logger.log("INFO", "Intialized connection with " + op.mailboxOwner() + "-> remove existing mail/s");
-        boolean statusRes = senderMailbox.removeMails(op.mailList());
+    private Operation deleteMail(MailboxPersistencyManager senderMailbox, Operation op) {
+        logger.log("INFO", "Intialized connection with " + op.mailboxOwner() + "-> remove " + op.mailList().size() + " mail/s");
+        senderMailbox.removeMails(op.mailList());
 
-        if(!statusRes)
-            return getErrorAndLog(op, "Couldn't delete mail (maybe it doesn't exist)");
         return op.getValidResponse(op.operation(), op.mailList());
-
     }
 }
