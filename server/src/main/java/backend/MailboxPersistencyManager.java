@@ -8,14 +8,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class MailboxPersistencyManager {
     // STATIC
-    private final static HashMap<String, ReadWriteLock> existingLocks = new HashMap<>();
+    private final static HashMap<String, MailboxPersistencyManager> openedMailbox = new HashMap<>();
     //FIELD
-    private final ReadWriteLock fileLock;
     private final Gson gson = new Gson();
     private final File file;
 
@@ -28,20 +25,19 @@ public class MailboxPersistencyManager {
         if(!file.exists())
             throw new LoggableError("One of required account doesn't exist");
 
-        ReadWriteLock lock;
-        if(existingLocks.containsKey(filename)){
-            lock = existingLocks.get(filename);
+        MailboxPersistencyManager res;
+        if(openedMailbox.containsKey(filename)){
+            res = openedMailbox.get(filename);
         }else{
-            lock = new ReentrantReadWriteLock();
-            existingLocks.put(filename, lock);
+            res = new MailboxPersistencyManager(file);
+            openedMailbox.put(filename, res);
         }
 
-        return new MailboxPersistencyManager(new File(filename), lock);
+        return res;
     }
 
-    private MailboxPersistencyManager(File file, ReadWriteLock lock){
+    private MailboxPersistencyManager(File file){
         this.file = file;
-        this.fileLock = lock;
     }
 
     public static int getNextOp(List<SimpleMail> mails){
@@ -49,9 +45,9 @@ public class MailboxPersistencyManager {
         return mails.isEmpty() ? 0 : mails.getLast().id() + 1;
     }
 
-    public List<SimpleMail> readMails(){ return load(); }
+    public synchronized List<SimpleMail> readMails(){ return load(); }
 
-    public void appendMails(List<SimpleMail> mails){
+    public synchronized void appendMails(List<SimpleMail> mails){
         List<SimpleMail> toWrite = load();
 
         int id = getNextOp(toWrite);
@@ -63,7 +59,7 @@ public class MailboxPersistencyManager {
         save(toWrite);
     }
 
-    public void removeMails(List<SimpleMail> mails){
+    public synchronized void removeMails(List<SimpleMail> mails){
         List<SimpleMail> toWrite = load();
 
         boolean removed = toWrite.removeAll(mails);
@@ -76,26 +72,20 @@ public class MailboxPersistencyManager {
     private List<SimpleMail> load(){
         List<SimpleMail> res = new ArrayList<>();
 
-        fileLock.readLock().lock();
         try (Reader reader = new InputStreamReader(new FileInputStream(file))) {
             res.addAll(List.of(gson.fromJson(reader, SimpleMail[].class)));
         } catch (IOException e) {
             throw new LoggableError("Internal Server Error while reading");
-        } finally {
-            fileLock.readLock().unlock();
         }
 
         return res;
     }
 
     private void save(List<SimpleMail> toWrite){
-        fileLock.writeLock().lock();
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(file))) {
             gson.toJson(toWrite.toArray(), writer);
         } catch (IOException e) {
             throw new LoggableError("Internal Server Error while writing");
-        } finally {
-            fileLock.writeLock().unlock();
         }
     }
 }

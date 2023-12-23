@@ -113,6 +113,5 @@ public class ConnectionReplier implements Runnable {
         senderMailbox.removeMails(op.mailList());
 
         return op.getValidResponse(op.operation(), op.mailList());
-
     }
 }

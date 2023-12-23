@@ -7,9 +7,12 @@ import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server implements Runnable, Logger{
     private Logger logger;
+    private final ExecutorService executorService = Executors.newFixedThreadPool(10);
 
     private static Server singleInstance;
     public static Server getServer(Logger logger){
@@ -35,11 +38,13 @@ public class Server implements Runnable, Logger{
                 }
 
                 ConnectionReplier replier = new ConnectionReplier(this, socket);
-                new Thread(replier).start();
+                executorService.execute(replier);
             }
         }catch (IOException exc){
             log("FATAL", "Cannot open/accept server socket");
         }
+
+        executorService.shutdown();
     }
 
     @Override public void log(String type, String str) {
