@@ -5,10 +5,11 @@ import frontend.util.StageWrapper;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import model.MailBox;
+import model.operationData.SimpleMail;
+import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.Executors;
-import javax.swing.JOptionPane;
 
 public class App extends Application{
     // Static
@@ -21,6 +22,7 @@ public class App extends Application{
     // Fields
     private StageWrapper stageWrapper;
     private StageWrapper dialog;
+    private boolean firstTime = true;
     private int numUnread = 0;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
@@ -50,8 +52,25 @@ public class App extends Application{
         scheduler.scheduleAtFixedRate(updater, 0, TIME_TO_UPDATE, TimeUnit.SECONDS);
     }
 
-    private void notifyNewMail(Integer changed) {
-        if(changed == null || changed <= 0)
+    private void notifyNewMail(List<SimpleMail> newMails) {
+        boolean online = newMails != null;
+        singleMailBox.setOnline(online);
+        if(!online) return;
+
+        singleMailBox.add(newMails);
+        if(firstTime){
+            firstTime = false;
+            return;
+        }
+
+        int changed = newMails.stream().filter((mail) ->
+                !mail.source().equals(singleMailBox.getOwner()))
+                .toList().size();
+        openDialog(changed);
+    }
+
+    private void openDialog(int changed){
+        if(changed <= 0)
             return;
 
         numUnread += changed;
@@ -66,7 +85,6 @@ public class App extends Application{
             dialog.setTitle(numUnread + " New Message/s - " + singleMailBox.getOwner());
             dialog.open();
         }
-
     }
 
     private void setParameters(){
